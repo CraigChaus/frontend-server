@@ -11,21 +11,24 @@ public class Main {
 
         chat.startTheChat();
 
+        String menu = "1. Connect to the server with username\n2. Send a broadcast message\n9. Disconnect from the server";
+        int choice;
 
-            Scanner scanner = new Scanner(System.in);
+        do {
 
             //The menu
-            System.out.println("1. Connect to the server with username");
-            System.out.println("2. Send a broadcast message");
-            System.out.println("9. Disconnect from the server");
+            System.out.println(menu);
 
-            int choice = scanner.nextInt();
-            switch (choice){
+            Scanner scanner = new Scanner(System.in);
+            choice = scanner.nextInt();
+
+            switch (choice) {
                 case 1:
                     System.out.println("Enter username");
                     scanner = new Scanner(System.in);
                     String username = scanner.nextLine();
                     chat.enterUsername(username);
+                    menu = menu.replace("1. Connect to the server with username", "");
                     break;
                 case 2:
                     System.out.println("Enter Broadcast message");
@@ -34,10 +37,12 @@ public class Main {
                     chat.sendBroadcastMessage(broadMessage);
                     break;
                 case 9:
+                    System.out.println("+++++++++++++++++++GOOD BYE+++++++++++++++++++");
                     chat.disconnect();
-                default:
-                    //receive error from server
-            }
 
+                default:
+                    System.out.println("Please, choose the number above!");
+            }
+        }while (choice!=9);
     }
 }
