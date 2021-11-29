@@ -1,5 +1,4 @@
-import java.io.*;
-import java.net.ContentHandler;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -7,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Chat chat = new Chat(new Socket("127.0.0.1",1337));
+        ClientChat chat = new ClientChat(new Socket("127.0.0.1",1337));
 
         chat.startTheChat();
 
