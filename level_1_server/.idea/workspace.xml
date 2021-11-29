@@ -1,53 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ChangeListManager">
-    <list default="true" id="9055ed0c-f65b-4a6e-ae72-37b574746a6e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Chat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Chat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-    </list>
-    <list id="e69cd7eb-2b2c-45af-beb7-ee05a2083136" name="Changes by User" comment="">
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-    </list>
-    <option name="SHOW_DIALOG" value="false" />
-    <option name="HIGHLIGHT_CONFLICTS" value="true" />
-    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
-    <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-  </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/src/Main.java">
-      <ranges>
-        <range start1="13" end1="13" start2="13" end2="15" changelist="9055ed0c-f65b-4a6e-ae72-37b574746a6e" />
-        <range start1="14" end1="15" start2="16" end2="17" changelist="9055ed0c-f65b-4a6e-ae72-37b574746a6e" />
-        <range start1="17" end1="20" start2="19" end2="20" changelist="e69cd7eb-2b2c-45af-beb7-ee05a2083136" />
-        <range start1="21" end1="23" start2="21" end2="25" changelist="9055ed0c-f65b-4a6e-ae72-37b574746a6e" />
-        <range start1="28" end1="28" start2="30" end2="31" changelist="e69cd7eb-2b2c-45af-beb7-ee05a2083136" />
-        <range start1="36" end1="36" start2="39" end2="40" changelist="9055ed0c-f65b-4a6e-ae72-37b574746a6e" />
-        <range start1="37" end1="37" start2="41" end2="42" changelist="9055ed0c-f65b-4a6e-ae72-37b574746a6e" />
-        <range start1="38" end1="39" start2="43" end2="44" changelist="9055ed0c-f65b-4a6e-ae72-37b574746a6e" />
-        <range start1="40" end1="41" start2="45" end2="46" changelist="9055ed0c-f65b-4a6e-ae72-37b574746a6e" />
-      </ranges>
-    </file>
-  </component>
-  <component name="ProjectId" id="21SDmHb77zsSG0i1kOm8PDWNxna" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-  </component>
   <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="level_1_server" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -57,20 +24,5 @@
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
-  <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="9055ed0c-f65b-4a6e-ae72-37b574746a6e" name="Changes" comment="" />
-      <created>1637925754245</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1637925754245</updated>
-      <workItem from="1637925756959" duration="8135000" />
-    </task>
-    <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
   </component>
 </project>

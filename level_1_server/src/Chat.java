@@ -21,24 +21,37 @@ public class Chat {
                     inputStream = socket.getInputStream();
                     serverReader = new BufferedReader(new InputStreamReader(inputStream));
 
-                    String receivedMessage = serverReader.readLine();
+                    String receivedServerMessage = serverReader.readLine();
 
-                    if (receivedMessage.equals("PING")) {
-                        PrintWriter writer = new PrintWriter(outputStream);
-                        writer.println("PONG");
-                        writer.flush();
-                    } else if (receivedMessage.startsWith("OK BCST")) {
+                    // Simple information for client about response of their operations
+                    if (receivedServerMessage.equals("PING")) {
+
+                        sendPong();
+
+                    } else if (receivedServerMessage.startsWith("OK BCST")) {
+
                         System.out.println("Message successfully broadcasted");
-                    } else if (receivedMessage.startsWith("BCST")) {
-                        String broadcastReceived = receivedMessage.replace("BCST ", "");
-                        String username = broadcastReceived.split(" ")[0];
-                        String messageItSelf = broadcastReceived.split(" ", 2)[1];
 
-                        System.out.println(username + ": " + messageItSelf);
-                    } else if (receivedMessage.startsWith("OK")) {
-                        System.out.println("You are successfully logged in as " + receivedMessage.substring(3));
-                    } else if (receivedMessage.startsWith("DCSN")) {
+                    } else if (receivedServerMessage.startsWith("BCST")) {
+
+//                        String broadcastReceived = receivedServerMessage.replace("BCST ", "");
+//                        String username = broadcastReceived.split(" ")[0];
+//                        String messageItSelf = broadcastReceived.split(" ", 2)[1];
+//
+//                        System.out.println(username + ": " + messageItSelf);
+
+                        String messageToShow = formatBroadcastMessage(receivedServerMessage);
+
+                        System.out.println(messageToShow);
+
+                    } else if (receivedServerMessage.startsWith("OK")) {
+
+                        System.out.println("You are successfully logged in as " + receivedServerMessage.substring(3));
+
+                    } else if (receivedServerMessage.startsWith("DCSN")) {
+
                         System.out.println("You are no longer connected to the server");
+
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -59,9 +72,15 @@ public class Chat {
 
     public void sendBroadcastMessage(String clientMessage){
 
-        if((clientMessage.contains(commands[0]))||(clientMessage.contains(commands[1]))||(clientMessage.contains(commands[2]))||(clientMessage.contains(commands[3]))){
+        if((clientMessage.contains(commands[0])) ||
+                (clientMessage.contains(commands[1])) ||
+                (clientMessage.contains(commands[2])) ||
+                (clientMessage.contains(commands[3]))){
+
             System.out.println("Invalid message");
+
         } else {
+
             String message = commands[1] + " " + clientMessage;
             PrintWriter writer = new PrintWriter(outputStream);
             writer.println(message);
@@ -78,6 +97,21 @@ public class Chat {
         writer.println(message);
 
         writer.flush();
+    }
+
+    public void sendPong() {
+        PrintWriter writer = new PrintWriter(outputStream);
+        writer.println("PONG");
+        writer.flush();
+    }
+
+    public String formatBroadcastMessage(String receivedServerMessage) {
+
+        String broadcastMessageReceived = receivedServerMessage.replace("BCST ", "");
+        String username = broadcastMessageReceived.split(" ")[0];
+        String messageText = broadcastMessageReceived.split(" ", 2)[1];
+
+        return username + ": " + messageText;
     }
 
     public void disconnect(){
