@@ -1,6 +1,14 @@
 import java.io.*;
 import java.net.Socket;
 
+
+/*
+    Notes from teacher
+1. Make the thread starting easier. Don't have startChat method, but extend ClientChat class from Thread class.
+2. Simplify if else block by parsing the received message
+
+
+*/
 public class ClientChat {
     private Socket socket;
     private InputStream inputStream;
@@ -45,6 +53,7 @@ public class ClientChat {
                     } else if (receivedServerMessage.startsWith("DCSN")) {
 
                         System.out.println("You are no longer connected to the server");
+
 
                     }
                 } catch (IOException e) {

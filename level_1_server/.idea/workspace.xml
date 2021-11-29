@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="84e92f90-f436-4ea7-95c0-1c3387f374de" name="Default Changelist" comment="Cleaned the code">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+    <list default="true" id="84e92f90-f436-4ea7-95c0-1c3387f374de" name="Default Changelist" comment="cleaned the code v2&#10;added main">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Chat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientChat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/level_1_server/ClientChat.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/level_1_server/ClientChat.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ClientChat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientChat.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +62,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1638200004679</updated>
-      <workItem from="1638200009202" duration="1270000" />
+      <workItem from="1638200009202" duration="3523000" />
     </task>
     <task id="LOCAL-00001" summary="Cleaned the code">
       <created>1638200228976</created>
@@ -72,7 +71,21 @@
       <option name="project" value="LOCAL" />
       <updated>1638200228977</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="cleaned the code v2&#10;added main">
+      <created>1638201592906</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1638201592906</updated>
+    </task>
+    <task id="LOCAL-00003" summary="cleaned the code v2&#10;added main">
+      <created>1638201715922</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1638201715922</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -91,6 +104,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Cleaned the code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleaned the code" />
+    <MESSAGE value="cleaned the code v2&#10;added main" />
+    <option name="LAST_COMMIT_MESSAGE" value="cleaned the code v2&#10;added main" />
   </component>
 </project>
