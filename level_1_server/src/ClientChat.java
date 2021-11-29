@@ -3,10 +3,10 @@ import java.net.Socket;
 
 
 /*
+
     Notes from teacher
 1. Make the thread starting easier. Don't have startChat method, but extend ClientChat class from Thread class.
 2. Simplify if else block by parsing the received message
-
 
 */
 public class ClientChat {
@@ -43,7 +43,6 @@ public class ClientChat {
                     } else if (receivedServerMessage.startsWith("BCST")) {
 
                         String messageToShow = formatBroadcastMessage(receivedServerMessage);
-
                         System.out.println(messageToShow);
 
                     } else if (receivedServerMessage.startsWith("OK")) {
@@ -54,8 +53,12 @@ public class ClientChat {
 
                         System.out.println("You are no longer connected to the server");
 
+                    } else if (receivedServerMessage.startsWith("ER01")) {
+
+                        System.out.println("There is a user with this username already!\nPress 1 to try again");
 
                     }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
