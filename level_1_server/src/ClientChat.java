@@ -1,7 +1,7 @@
 import java.io.*;
 import java.net.Socket;
 
-public class Chat {
+public class ClientChat {
     private Socket socket;
     private InputStream inputStream;
     private OutputStream outputStream;
@@ -9,7 +9,7 @@ public class Chat {
 
     private final String[] commands = new String[]{"CONN","BCST","MSG","QUIT"};
 
-    public Chat(Socket socket){
+    public ClientChat(Socket socket){
         this.socket = socket;
     }
 
@@ -34,12 +34,6 @@ public class Chat {
 
                     } else if (receivedServerMessage.startsWith("BCST")) {
 
-//                        String broadcastReceived = receivedServerMessage.replace("BCST ", "");
-//                        String username = broadcastReceived.split(" ")[0];
-//                        String messageItSelf = broadcastReceived.split(" ", 2)[1];
-//
-//                        System.out.println(username + ": " + messageItSelf);
-
                         String messageToShow = formatBroadcastMessage(receivedServerMessage);
 
                         System.out.println(messageToShow);
@@ -60,14 +54,12 @@ public class Chat {
         });
         readThread.start();
 
-        Thread writeThread = new Thread(() -> {
-            try {
-                outputStream = socket.getOutputStream();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        writeThread.start();
+        try {
+            outputStream = socket.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void sendBroadcastMessage(String clientMessage){
