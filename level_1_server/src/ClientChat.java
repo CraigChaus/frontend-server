@@ -1,5 +1,7 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /*
@@ -36,7 +38,9 @@ public class ClientChat {
 
                         sendPong();
 
-                    } else if (receivedServerMessage.startsWith("OK BCST")) {
+                    }
+
+                    if (receivedServerMessage.startsWith("OK BCST")) {
 
                         System.out.println("Message successfully broadcasted");
 
@@ -93,14 +97,22 @@ public class ClientChat {
         }
     }
 
-    public void enterUsername(String clientMessage){
+    public void enterUsername(String username){
+        Pattern pattern = Pattern.compile("[- !@#$%^&*()+=|/?.>,<`~]", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(username);
+        boolean matchFound = matcher.find();
 
-        String message = commands[0] + " " + clientMessage;
+        if(matchFound) {
+            System.out.println("Use only letters and numbers in your username");
+        } else {
+            String message = commands[0] + " " + username;
 
-        PrintWriter writer = new PrintWriter(outputStream);
-        writer.println(message);
+            PrintWriter writer = new PrintWriter(outputStream);
+            writer.println(message);
 
-        writer.flush();
+            writer.flush();
+        }
+
     }
 
     public void sendPong() {
