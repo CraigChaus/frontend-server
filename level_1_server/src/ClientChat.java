@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,7 +61,10 @@ public class ClientChat {
                     } else if (receivedServerMessage.startsWith("ER01")) {
 
                         System.out.println("There is a user with this username already!\nPress 1 to try again");
+                    }else if(receivedServerMessage.startsWith("OK LST")){
 
+                        String listToShow = formatListMessage(receivedServerMessage);
+                        System.out.println(listToShow);
                     }
 
                 } catch (IOException e) {
@@ -128,6 +132,24 @@ public class ClientChat {
         String messageText = broadcastMessageReceived.split(" ", 2)[1];
 
         return username + ": " + messageText;
+    }
+
+    public String formatListMessage(String receivedServerMessage) {
+
+        String result = "";
+        String listMessageReceived = receivedServerMessage.replace("OK LST", "");
+        String[] singleUsername = listMessageReceived.split(",");
+
+        for (int i = 0; i < singleUsername.length; i++) {
+            String authStatus = singleUsername[i].split(" ")[0];
+            String userName = singleUsername[i].split(" ")[1];
+
+            if(authStatus.equals("1")){
+                result += "*";
+            }
+            result += userName + "\n";
+        }
+        return result;
     }
 
     public void disconnect(){
