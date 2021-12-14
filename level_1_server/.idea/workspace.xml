@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d6e9094c-40d9-4f78-b498-d8dfcdd0bb27" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/level_1_server/ClientChat.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/level_1_server/ClientChat.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +49,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1639231429833</updated>
-      <workItem from="1639231431084" duration="3040000" />
+      <workItem from="1639231431084" duration="3317000" />
+      <workItem from="1639318116848" duration="1580000" />
+      <workItem from="1639416759005" duration="522000" />
     </task>
     <servers />
   </component>
@@ -70,6 +68,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
