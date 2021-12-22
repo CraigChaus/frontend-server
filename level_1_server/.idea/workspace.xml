@@ -3,7 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="84e92f90-f436-4ea7-95c0-1c3387f374de" name="Default Changelist" comment="added teacher review as comments">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/level_1_server/ClientChat.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/level_1_server/ClientChat.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/level_1_server/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/level_1_server/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ClientChat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientChat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +40,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
@@ -46,15 +50,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -69,6 +71,17 @@
       <option name="presentableId" value="Default" />
       <updated>1638200004679</updated>
       <workItem from="1638200009202" duration="4852000" />
+      <workItem from="1638908247794" duration="588000" />
+      <workItem from="1638963123761" duration="748000" />
+      <workItem from="1639049338144" duration="2007000" />
+      <workItem from="1639137764553" duration="1577000" />
+      <workItem from="1639311982827" duration="1998000" />
+      <workItem from="1639408181749" duration="1236000" />
+      <workItem from="1639480814851" duration="4181000" />
+      <workItem from="1640016828019" duration="7302000" />
+      <workItem from="1640088398900" duration="4099000" />
+      <workItem from="1640121108155" duration="1233000" />
+      <workItem from="1640199171146" duration="2042000" />
     </task>
     <task id="LOCAL-00001" summary="Cleaned the code">
       <created>1638200228976</created>

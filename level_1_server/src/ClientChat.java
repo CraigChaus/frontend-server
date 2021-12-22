@@ -35,9 +35,7 @@ public class ClientChat {
 
                     // Simple information for client about response of their operations
                     if (receivedServerMessage.equals("PING")) {
-
                         sendPong();
-
                     }
 
                     if (receivedServerMessage.startsWith("OK BCST")) {
@@ -49,9 +47,9 @@ public class ClientChat {
                         String messageToShow = formatBroadcastMessage(receivedServerMessage);
                         System.out.println(messageToShow);
 
-                    } else if (receivedServerMessage.startsWith("OK")) {
+                    } else if (receivedServerMessage.startsWith("OK CONN")) {
 
-                        System.out.println("You are successfully logged in as " + receivedServerMessage.substring(3));
+                        System.out.println("You are successfully logged in as " + receivedServerMessage.substring(8));
 
                     } else if (receivedServerMessage.startsWith("DCSN")) {
 
@@ -61,6 +59,8 @@ public class ClientChat {
 
                         System.out.println("There is a user with this username already!\nPress 1 to try again");
 
+                    } else if (receivedServerMessage.startsWith("OK CRT")) {
+                        System.out.println("Group was created");
                     }
 
                 } catch (IOException e) {
@@ -76,6 +76,14 @@ public class ClientChat {
             e.printStackTrace();
         }
 
+    }
+
+    public void handleReceivedMessage(String message) {
+        String response = message.split(" ")[0] + message.split(" ")[1];
+
+        switch (response) {
+
+        }
     }
 
     public void sendBroadcastMessage(String clientMessage){
@@ -113,6 +121,23 @@ public class ClientChat {
             writer.flush();
         }
 
+    }
+
+    public void createGroup(String name) {
+        Pattern pattern = Pattern.compile("[- !@#$%^&*()+=|/?.>,<`~]", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(name);
+        boolean matchFound = matcher.find();
+
+        if(matchFound) {
+            System.out.println("Use only letters and numbers in your group name");
+        } else {
+            String message = "GRP CRT " + name;
+
+            PrintWriter writer = new PrintWriter(outputStream);
+            writer.println(message);
+
+            writer.flush();
+        }
     }
 
     public void sendPong() {

@@ -10,7 +10,7 @@ public class Main {
 
         chat.startTheChat();
 
-        String menu = "1. Connect to the server with username\n2. Send a broadcast message\n9. Disconnect from the server";
+        String menu = "1. Connect to the server with username\n2. Send a broadcast message\n3. Create a group\n9. Disconnect from the server";
         int choice;
 
         do {
@@ -34,6 +34,15 @@ public class Main {
                     scanner = new Scanner(System.in);
                     String broadMessage = scanner.nextLine();
                     chat.sendBroadcastMessage(broadMessage);
+                    break;
+
+                case 3:
+                    System.out.println("Group name: ");
+                    scanner = new Scanner(System.in);
+
+                    String groupName = scanner.nextLine();
+                    chat.createGroup(groupName);
+
                     break;
                 case 9:
                     System.out.println("+++++++++++++++++++GOOD BYE+++++++++++++++++++");
