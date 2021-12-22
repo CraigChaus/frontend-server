@@ -78,13 +78,6 @@ public class ClientChat {
 
     }
 
-    public void handleReceivedMessage(String message) {
-        String response = message.split(" ")[0] + message.split(" ")[1];
-
-        switch (response) {
-
-        }
-    }
 
     public void sendBroadcastMessage(String clientMessage){
 
