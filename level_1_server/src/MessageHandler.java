@@ -22,6 +22,13 @@ public class MessageHandler extends Thread{
 
                 String receivedMessage = reader.readLine();
 
+                if (receivedMessage.equals("PING")) {
+                    sendPong();
+                } else {
+                    System.out.println(processReceivedMessage(receivedMessage));
+                }
+
+
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -96,9 +103,32 @@ public class MessageHandler extends Thread{
                         break;
 
                 }
+
+                break;
+
+            case "BCST":
+                processedResponse = formatBroadcastMessage(message);
+                break;
+
+            default:
+                processedResponse = message;
         }
 
         return processedResponse;
 
+    }
+
+    public String formatBroadcastMessage(String receivedServerMessage) {
+
+        String broadcastMessageReceived = receivedServerMessage.replace("BCST ", "");
+        String username = broadcastMessageReceived.split(" ")[0];
+        String messageText = broadcastMessageReceived.split(" ", 2)[1];
+
+        return username + ": " + messageText;
+    }
+
+    public void sendPong() {
+        writer.println("PONG");
+        writer.flush();
     }
 }
