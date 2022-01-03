@@ -129,6 +129,17 @@ public class ClientChat {
 
     }
 
+    public void sendFileAcknowledgement(String receiver) {
+        boolean validationPassed = validateNamesAndMessagesByCommands(receiver) && validateNamesBySpecialCharacters(receiver);
+
+        if (validationPassed) {
+            writer.println("FIL ACK " + receiver);
+            writer.flush();
+        } else {
+            System.out.println("Use only letters and numbers in your username. Don't use commands!");
+        }
+    }
+
     public void disconnect(){
         String message = commands[3];
 
