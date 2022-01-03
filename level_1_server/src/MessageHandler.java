@@ -114,6 +114,11 @@ public class MessageHandler extends Thread{
                 processedResponse = formatGroupMessage(message);
                 break;
 
+            case "PMSG":
+                processedResponse = "You have got a private message:\n" + message.split(" ")[1] + ": " +
+                        message.split(" ",3)[2];
+                break;
+
             default:
                 processedResponse = message;
                 break;

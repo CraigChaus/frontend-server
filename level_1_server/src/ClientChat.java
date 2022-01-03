@@ -67,6 +67,12 @@ public class ClientChat {
         }
     }
 
+    public void sendPrivateMessage(String username, String message) {
+        String messageForServer = "PMSG " + username + " " + message;
+        writer.println(messageForServer);
+        writer.flush();
+    }
+
     public void createGroup(String groupName) {
         boolean validationPassed = validateNamesAndMessagesByCommands(groupName) && validateNamesBySpecialCharacters(groupName);
 

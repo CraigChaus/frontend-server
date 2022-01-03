@@ -39,7 +39,12 @@ public class Main {
                     chat.sendBroadcastMessage(broadMessage);
                     break;
                 case 3:
-                  //  System.out.println("");
+                    System.out.println("Enter username to send the message:");
+                    scanner = new Scanner(System.in);
+                    String usernameToSendPrivateMessage = scanner.nextLine();
+                    System.out.println("Enter the message:");
+                    String message = scanner.nextLine();
+                    chat.sendPrivateMessage(usernameToSendPrivateMessage, message);
                     break;
                 case 4:
                     System.out.println("Enter group name to send a message to:");
