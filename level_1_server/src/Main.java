@@ -13,7 +13,7 @@ public class Main {
         String menu = "1. Connect to the server with username\n2. Send a broadcast message\n" +
                 "3.Send a private message\n4.Send a message to a group\n5.Authenticate yourself" +
                 "\n6.Create a group\n7.Join a group\n8.Exit group\n9.List all clients\n10.List all groups\n" +
-                "0. Disconnect from the server";
+                "11.Send File to user" + "0. Disconnect from the server";
         int choice;
 
         do {
@@ -81,6 +81,14 @@ public class Main {
                 case 10:
                     chat.listAllGroups();
                     break;
+
+                case 11:
+                    System.out.println("Enter the name of the user to send the file:");
+                    scanner = new Scanner(System.in);
+                    String usernameToSendFileTo = scanner.nextLine();
+                    chat.sendFileAcknowledgement(usernameToSendFileTo);
+                    break;
+
                 case 0:
                     System.out.println("+++++++++++++++++++GOOD BYE+++++++++++++++++++");
                     chat.disconnect();

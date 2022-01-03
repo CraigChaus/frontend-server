@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class MessageHandler extends Thread{
 
@@ -27,8 +28,6 @@ public class MessageHandler extends Thread{
                 } else {
                     System.out.println(processReceivedMessage(receivedMessage));
                 }
-
-
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -117,6 +116,21 @@ public class MessageHandler extends Thread{
             case "PMSG":
                 processedResponse = "You have got a private message:\n" + message.split(" ")[1] + ": " +
                         message.split(" ",3)[2];
+                break;
+
+            case "ACK":
+                System.out.println("User " + message.split(" ")[1] + " wants to send you the file. " +
+                        "Do you accept it? (y/n)");
+                Scanner scanner = new Scanner(System.in);
+                String answer = scanner.nextLine();
+                String senderUsername = message.split(" ")[1];
+
+                if (answer.equalsIgnoreCase("y")) {
+                    writer.println("ACC " + senderUsername);
+                } else {
+                    writer.println("DEC " + senderUsername);
+                }
+                writer.flush();
                 break;
 
             default:
