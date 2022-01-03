@@ -25,50 +25,8 @@ public class ClientChat {
 
     public void startTheChat() {
 
-        Thread readThread = new Thread(() -> {
-            while (true) {
-                try {
-                    inputStream = socket.getInputStream();
-                    serverReader = new BufferedReader(new InputStreamReader(inputStream));
-
-                    String receivedServerMessage = serverReader.readLine();
-
-                    // Simple information for client about response of their operations
-                    if (receivedServerMessage.equals("PING")) {
-
-                        sendPong();
-
-                    }
-
-                    if (receivedServerMessage.startsWith("OK BCST")) {
-
-                        System.out.println("Message successfully broadcasted");
-
-                    } else if (receivedServerMessage.startsWith("BCST")) {
-
-                        String messageToShow = formatBroadcastMessage(receivedServerMessage);
-                        System.out.println(messageToShow);
-
-                    } else if (receivedServerMessage.startsWith("OK")) {
-
-                        System.out.println("You are successfully logged in as " + receivedServerMessage.substring(3));
-
-                    } else if (receivedServerMessage.startsWith("DCSN")) {
-
-                        System.out.println("You are no longer connected to the server");
-
-                    } else if (receivedServerMessage.startsWith("ER01")) {
-
-                        System.out.println("There is a user with this username already!\nPress 1 to try again");
-
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        readThread.start();
+        MessageHandler messageHandlerThread = new MessageHandler(socket);
+        messageHandlerThread.start();
 
         try {
             outputStream = socket.getOutputStream();
