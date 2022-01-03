@@ -15,77 +15,112 @@ public class ClientChat {
     private Socket socket;
     private InputStream inputStream;
     private OutputStream outputStream;
-    private BufferedReader serverReader;
+    private PrintWriter writer;
 
-    private final String[] commands = new String[]{"CONN","BCST","MSG","QUIT"};
+    private final String[] commands = new String[]{"CONN","BCST","MSG","QUIT", "GRP CRT", "GRP JOIN", "GRP LST", "GRP EXIT"};
 
     public ClientChat(Socket socket){
         this.socket = socket;
     }
 
     public void startTheChat() {
-
-        MessageHandler messageHandlerThread = new MessageHandler(socket);
-        messageHandlerThread.start();
-
         try {
             outputStream = socket.getOutputStream();
+            writer = new PrintWriter(outputStream);
+
+            MessageHandler messageHandlerThread = new MessageHandler(socket);
+            messageHandlerThread.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void sendBroadcastMessage(String clientMessage){
+    public void enterUsername(String username){
+        boolean validationPassed = validateNamesAndMessagesByCommands(username) && validateNamesBySpecialCharacters(username);
 
-        if((clientMessage.contains(commands[0])) ||
-                (clientMessage.contains(commands[1])) ||
-                (clientMessage.contains(commands[2])) ||
-                (clientMessage.contains(commands[3]))){
+        if(!validationPassed) {
+            System.out.println("Use only letters and numbers in your username. Don't use commands!");
+        } else {
+            String message = commands[0] + " " + username;
+
+            writer.println(message);
+
+            writer.flush();
+        }
+
+    }
+
+    public void sendBroadcastMessage(String clientMessage){
+        boolean validationPassed = validateNamesAndMessagesByCommands(clientMessage);
+
+        if(validationPassed){
 
             System.out.println("Invalid message");
 
         } else {
 
             String message = commands[1] + " " + clientMessage;
-            PrintWriter writer = new PrintWriter(outputStream);
             writer.println(message);
 
             writer.flush();
         }
     }
 
-    public void enterUsername(String username){
-        Pattern pattern = Pattern.compile("[- !@#$%^&*()+=|/?.>,<`~]", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(username);
-        boolean matchFound = matcher.find();
+    public void createGroup(String groupName) {
+        boolean validationPassed = validateNamesAndMessagesByCommands(groupName) && validateNamesBySpecialCharacters(groupName);
 
-        if(matchFound) {
-            System.out.println("Use only letters and numbers in your username");
+        if (validationPassed) {
+            String createGroupMessage = "GRP CRT " + groupName;
+            writer.println(createGroupMessage);
+            writer.flush();
         } else {
-            String message = commands[0] + " " + username;
-
-            PrintWriter writer = new PrintWriter(outputStream);
-            writer.println(message);
-
-            writer.flush();
+            System.out.println("Group name cannot contain commands!");
         }
 
     }
 
-    public void sendPong() {
-        PrintWriter writer = new PrintWriter(outputStream);
-        writer.println("PONG");
+    public void joinGroup(String groupName) {
+        boolean validationPassed = validateNamesAndMessagesByCommands(groupName);
+
+        if (validationPassed) {
+            String joinGroupMessage = "GRP JOIN " + groupName;
+            writer.println(joinGroupMessage);
+            writer.flush();
+        } else {
+            System.out.println("Group name cannot contain commands!");
+        }
+
+    }
+
+    public void sendMessageToGroup(String groupName, String message) {
+        boolean validationPassed = validateNamesAndMessagesByCommands(groupName) && validateNamesAndMessagesByCommands(message);
+
+        if (validationPassed) {
+            String groupBroadcastMessage = "GRP BCST " + groupName + " " + message;
+            writer.println(groupBroadcastMessage);
+            writer.flush();
+        } else {
+            System.out.println("Group name and message cannot contain commands!");
+        }
+    }
+
+    public void listAllGroups() {
+        writer.println("GRP LST");
         writer.flush();
     }
 
-    public String formatBroadcastMessage(String receivedServerMessage) {
+    public void exitGroup(String groupName) {
+        boolean validationPassed = validateNamesAndMessagesByCommands(groupName);
 
-        String broadcastMessageReceived = receivedServerMessage.replace("BCST ", "");
-        String username = broadcastMessageReceived.split(" ")[0];
-        String messageText = broadcastMessageReceived.split(" ", 2)[1];
+        if (validationPassed) {
+            String message = "GRP EXIT " + groupName;
+            writer.println(message);
+            writer.flush();
+        } else {
+            System.out.println("Group name cannot contain commands!");
+        }
 
-        return username + ": " + messageText;
     }
 
     public void disconnect(){
@@ -95,5 +130,25 @@ public class ClientChat {
         writer.println(message);
 
         writer.flush();
+    }
+
+    private boolean validateNamesAndMessagesByCommands(String message) {
+        boolean isMessageOk = true;
+
+        for (String command: commands) {
+            if (message.contains(command)) {
+                isMessageOk = false;
+            }
+        }
+
+        return isMessageOk;
+    }
+
+    private boolean validateNamesBySpecialCharacters(String name) {
+        Pattern pattern = Pattern.compile("[- !@#$%^&*()+=|/?.>,<`~]", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(name);
+        boolean matchFound = matcher.find();
+
+        return !matchFound;
     }
 }

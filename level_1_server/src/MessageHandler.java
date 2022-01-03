@@ -110,15 +110,20 @@ public class MessageHandler extends Thread{
                 processedResponse = formatBroadcastMessage(message);
                 break;
 
+            case "GRP BCST":
+                processedResponse = formatGroupMessage(message);
+                break;
+
             default:
                 processedResponse = message;
+                break;
         }
 
         return processedResponse;
 
     }
 
-    public String formatBroadcastMessage(String receivedServerMessage) {
+    private String formatBroadcastMessage(String receivedServerMessage) {
 
         String broadcastMessageReceived = receivedServerMessage.replace("BCST ", "");
         String username = broadcastMessageReceived.split(" ")[0];
@@ -127,7 +132,17 @@ public class MessageHandler extends Thread{
         return username + ": " + messageText;
     }
 
-    public void sendPong() {
+    private String formatGroupMessage(String receivedServerMessage) {
+        String broadcastMessageReceived = receivedServerMessage.replace("GRP BCST ", "");
+        String groupName = broadcastMessageReceived.split(" ")[0];
+        String username = broadcastMessageReceived.split(" ")[1];
+        String messageText = broadcastMessageReceived.split(" ", 3)[2];
+
+        String formattedMessage = "Received message from group " + groupName + ":\n" + username + ": " + messageText;
+        return formattedMessage;
+    }
+
+    private void sendPong() {
         writer.println("PONG");
         writer.flush();
     }

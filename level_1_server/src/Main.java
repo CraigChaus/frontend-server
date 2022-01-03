@@ -10,7 +10,10 @@ public class Main {
 
         chat.startTheChat();
 
-        String menu = "1. Connect to the server with username\n2. Send a broadcast message\n3.Send a private message\n4.Send a message to a group\n5.Authenticate yourself\n6.Create a group\n7.Join a group\n8.Exit group\n9.List all clients\n10.List all groups\n0. Disconnect from the server";
+        String menu = "1. Connect to the server with username\n2. Send a broadcast message\n" +
+                "3.Send a private message\n4.Send a message to a group\n5.Authenticate yourself" +
+                "\n6.Create a group\n7.Join a group\n8.Exit group\n9.List all clients\n10.List all groups\n" +
+                "0. Disconnect from the server";
         int choice;
 
         do {
@@ -23,14 +26,14 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    System.out.println("Enter username");
+                    System.out.println("Enter username:");
                     scanner = new Scanner(System.in);
                     String username = scanner.nextLine();
                     chat.enterUsername(username);
                     menu = menu.replace("1. Connect to the server with username", "");
                     break;
                 case 2:
-                    System.out.println("Enter Broadcast message");
+                    System.out.println("Enter Broadcast message:");
                     scanner = new Scanner(System.in);
                     String broadMessage = scanner.nextLine();
                     chat.sendBroadcastMessage(broadMessage);
@@ -39,22 +42,44 @@ public class Main {
                   //  System.out.println("");
                     break;
                 case 4:
+                    System.out.println("Enter group name to send a message to:");
+                    scanner = new Scanner(System.in);
+                    String groupName = scanner.nextLine();
+                    System.out.println("Enter Broadcast message to group:");
+                    String groupMessage = scanner.nextLine();
+                    chat.sendMessageToGroup(groupName, groupMessage);
                     break;
                 case 5:
                     break;
                 case 6:
+                    System.out.println("Enter name of the group you want to create:");
+                    scanner = new Scanner(System.in);
+                    String groupNameToCreate = scanner.nextLine();
+                    chat.createGroup(groupNameToCreate);
                     break;
                 case 7:
+                    System.out.println("Enter name of the group you want to join:");
+                    scanner = new Scanner(System.in);
+                    String groupNameToJoin = scanner.nextLine();
+                    chat.joinGroup(groupNameToJoin);
                     break;
                 case 8:
+                    System.out.println("Enter name of the group you want to exit:");
+                    scanner = new Scanner(System.in);
+                    String groupNameToExit = scanner.nextLine();
+                    chat.exitGroup(groupNameToExit);
                     break;
                 case 9:
                     System.out.println("Listing all clients");
                     break;
 
+                case 10:
+                    chat.listAllGroups();
+                    break;
                 case 0:
                     System.out.println("+++++++++++++++++++GOOD BYE+++++++++++++++++++");
                     chat.disconnect();
+                    break;
 
                 default:
                     System.out.println("Please, choose the number above!");
