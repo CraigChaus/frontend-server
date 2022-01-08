@@ -6,9 +6,11 @@ public class MessageHandler extends Thread{
 
     private Socket socket;
     private PrintWriter writer;
+    private ClientChat chat;
 
-    public MessageHandler(Socket socket) {
+    public MessageHandler(Socket socket, ClientChat chat) {
         this.socket = socket;
+        this.chat = chat;
     }
 
     @Override
@@ -119,18 +121,8 @@ public class MessageHandler extends Thread{
                 break;
 
             case "ACK":
-                System.out.println("User " + message.split(" ")[1] + " wants to send you the file. " +
-                        "Do you accept it? (y/n)");
-                Scanner scanner = new Scanner(System.in);
-                String answer = scanner.nextLine();
-                String senderUsername = message.split(" ")[1];
-
-                if (answer.equalsIgnoreCase("y")) {
-                    writer.println("ACC " + senderUsername);
-                } else {
-                    writer.println("DEC " + senderUsername);
-                }
-                writer.flush();
+                chat.addUsernameRequestingAcknowledgement(message.split(" ")[1]);
+                processedResponse = "You have got new file transfer request!";
                 break;
 
             default:
@@ -165,4 +157,21 @@ public class MessageHandler extends Thread{
         writer.println("PONG");
         writer.flush();
     }
+
+//    private void processTheAck(String message) {
+//        System.out.println("User " + message.split(" ")[1] + " wants to send you the file. " +
+//                "Do you accept it? (y/n)");
+//        Scanner scanner = new Scanner(System.in);
+//        String answer = scanner.nextLine();
+//        String senderUsername = message.split(" ")[1];
+//
+//        if (answer.equalsIgnoreCase("y")) {
+//            writer.println("ACC " + senderUsername);
+//            System.out.println("Accepted");
+//        } else {
+//            writer.println("DEC " + senderUsername);
+//            System.out.println("Declined");
+//        }
+//        writer.flush();
+//    }
 }

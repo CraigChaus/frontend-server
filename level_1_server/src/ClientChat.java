@@ -1,5 +1,7 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,14 +15,16 @@ import java.util.regex.Pattern;
 */
 public class ClientChat {
     private Socket socket;
-    private InputStream inputStream;
     private OutputStream outputStream;
-    private PrintWriter writer;
+    private static PrintWriter writer;
+
+    private ArrayList<String> usernamesRequestingAck;
 
     private final String[] commands = new String[]{"CONN","BCST","MSG","QUIT", "GRP CRT", "GRP JOIN", "GRP LST", "GRP EXIT"};
 
     public ClientChat(Socket socket){
         this.socket = socket;
+        this.usernamesRequestingAck = new ArrayList<>();
     }
 
     public void startTheChat() {
@@ -28,7 +32,7 @@ public class ClientChat {
             outputStream = socket.getOutputStream();
             writer = new PrintWriter(outputStream);
 
-            MessageHandler messageHandlerThread = new MessageHandler(socket);
+            MessageHandler messageHandlerThread = new MessageHandler(socket, this);
             messageHandlerThread.start();
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,7 +58,7 @@ public class ClientChat {
     public void sendBroadcastMessage(String clientMessage){
         boolean validationPassed = validateNamesAndMessagesByCommands(clientMessage);
 
-        if(validationPassed){
+        if(!validationPassed){
 
             System.out.println("Invalid message");
 
@@ -140,6 +144,11 @@ public class ClientChat {
         }
     }
 
+    public void acceptAcknowledgement(String username) {
+        writer.println("ACC " + username);
+        writer.flush();
+    }
+
     public void disconnect(){
         String message = commands[3];
 
@@ -167,5 +176,30 @@ public class ClientChat {
         boolean matchFound = matcher.find();
 
         return !matchFound;
+    }
+
+    public void addUsernameRequestingAcknowledgement(String name) {
+        usernamesRequestingAck.add(name);
+    }
+
+    public ArrayList<String> getUsernamesRequestingAck() {
+        return usernamesRequestingAck;
+    }
+
+    public void processTheAck(String message) {
+        System.out.println("User " + message.split(" ")[1] + " wants to send you the file. " +
+                "Do you accept it? (y/n)");
+        Scanner scanner = new Scanner(System.in);
+        String answer = scanner.nextLine();
+        String senderUsername = message.split(" ")[1];
+
+        if (answer.equalsIgnoreCase("y")) {
+            writer.println("ACC " + senderUsername);
+            System.out.println("Accepted");
+        } else {
+            writer.println("DEC " + senderUsername);
+            System.out.println("Declined");
+        }
+        writer.flush();
     }
 }

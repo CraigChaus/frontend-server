@@ -13,15 +13,16 @@ public class Main {
         String menu = "1. Connect to the server with username\n2. Send a broadcast message\n" +
                 "3.Send a private message\n4.Send a message to a group\n5.Authenticate yourself" +
                 "\n6.Create a group\n7.Join a group\n8.Exit group\n9.List all clients\n10.List all groups\n" +
-                "11.Send File to user" + "0. Disconnect from the server";
+                "11.Send File to user\n20. See clients who tries to send you a file" + "0. Disconnect from the server\n";
         int choice;
+
 
         do {
 
             //The menu
             System.out.println(menu);
-
             Scanner scanner = new Scanner(System.in);
+
             choice = scanner.nextInt();
 
             switch (choice) {
@@ -89,6 +90,20 @@ public class Main {
                     chat.sendFileAcknowledgement(usernameToSendFileTo);
                     break;
 
+                case 20:
+                    if (chat.getUsernamesRequestingAck().size() != 0) {
+                        System.out.println(chat.getUsernamesRequestingAck());
+                        scanner = new Scanner(System.in);
+                        System.out.println("\nWho do you want to accept?");
+                        String usernameToAccept = scanner.nextLine();
+                        if (chat.getUsernamesRequestingAck().contains(usernameToAccept)) {
+                            chat.acceptAcknowledgement(usernameToAccept);
+                            System.out.println("You accepted the acknowledgement for " + usernameToAccept + "");
+                        }
+                    }
+
+                    break;
+
                 case 0:
                     System.out.println("+++++++++++++++++++GOOD BYE+++++++++++++++++++");
                     chat.disconnect();
@@ -97,6 +112,6 @@ public class Main {
                 default:
                     System.out.println("Please, choose the number above!");
             }
-        }while (choice!=0);
+        } while (choice != 0);
     }
 }
