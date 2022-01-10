@@ -6,9 +6,11 @@ public class MessageHandler extends Thread{
 
     private Socket socket;
     private PrintWriter writer;
+    private ClientChat chat;
 
-    public MessageHandler(Socket socket) {
+    public MessageHandler(Socket socket, ClientChat chat) {
         this.socket = socket;
+        this.chat = chat;
     }
 
     @Override
@@ -49,10 +51,6 @@ public class MessageHandler extends Thread{
                     case "CONN":
                         String username = message.split(" ")[2];
                         processedResponse = "You are successfully logged in as " + username;
-                        break;
-
-                    case "PASS":
-                        processedResponse = "You password has been registered!";
                         break;
 
                     case "AUTH":
@@ -97,6 +95,10 @@ public class MessageHandler extends Thread{
                         processedResponse = "Your private message is sent!";
                         break;
 
+                    case "PASS":
+                        processedResponse = "Password successfully created!";
+                        break;
+
                     case "QUIT":
                         processedResponse = "GOODBYE!";
                         break;
@@ -109,8 +111,12 @@ public class MessageHandler extends Thread{
                 processedResponse = formatBroadcastMessage(message);
                 break;
 
-            case "GRP BCST":
-                processedResponse = formatGroupMessage(message);
+            case "GRP":
+                switch (message.split(" ")[1]) {
+                    case "BCST":
+                        processedResponse = formatGroupMessage(message);
+                        break;
+                }
                 break;
 
             case "PMSG":
@@ -119,18 +125,23 @@ public class MessageHandler extends Thread{
                 break;
 
             case "ACK":
-                System.out.println("User " + message.split(" ")[1] + " wants to send you the file. " +
-                        "Do you accept it? (y/n)");
-                Scanner scanner = new Scanner(System.in);
-                String answer = scanner.nextLine();
-                String senderUsername = message.split(" ")[1];
+                chat.addUsernameRequestingAcknowledgement(message.split(" ")[1]);
+                processedResponse = "You have got new file transfer request!";
+                break;
 
-                if (answer.equalsIgnoreCase("y")) {
-                    writer.println("ACC " + senderUsername);
-                } else {
-                    writer.println("DEC " + senderUsername);
+            case "FIL":
+                secondCommand = message.split(" ")[1];
+
+                switch (secondCommand) {
+                    case "ACC":
+                        System.out.println("User " + message.split(" ")[2] + " accepted your file transfer request!");
+                        break;
+
+                    case "DEC":
+                        System.out.println("User " + message.split(" ")[2] + " declined your file transfer request!");
+                        break;
                 }
-                writer.flush();
+
                 break;
 
             default:
@@ -161,8 +172,29 @@ public class MessageHandler extends Thread{
         return formattedMessage;
     }
 
+    private void startLoadingTheFile() throws IOException {
+        Socket fileSocket = new Socket("127.0.0.1", 1338);
+    }
+
     private void sendPong() {
         writer.println("PONG");
         writer.flush();
     }
+
+//    private void processTheAck(String message) {
+//        System.out.println("User " + message.split(" ")[1] + " wants to send you the file. " +
+//                "Do you accept it? (y/n)");
+//        Scanner scanner = new Scanner(System.in);
+//        String answer = scanner.nextLine();
+//        String senderUsername = message.split(" ")[1];
+//
+//        if (answer.equalsIgnoreCase("y")) {
+//            writer.println("ACC " + senderUsername);
+//            System.out.println("Accepted");
+//        } else {
+//            writer.println("DEC " + senderUsername);
+//            System.out.println("Declined");
+//        }
+//        writer.flush();
+//    }
 }
