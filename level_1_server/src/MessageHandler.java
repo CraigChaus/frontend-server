@@ -53,10 +53,6 @@ public class MessageHandler extends Thread{
                         processedResponse = "You are successfully logged in as " + username;
                         break;
 
-                    case "PASS":
-                        processedResponse = "You password has been registered!";
-                        break;
-
                     case "AUTH":
                         processedResponse = "You are successfully authenticated!";
                         break;
@@ -99,6 +95,10 @@ public class MessageHandler extends Thread{
                         processedResponse = "Your private message is sent!";
                         break;
 
+                    case "PASS":
+                        processedResponse = "Password successfully created!";
+                        break;
+
                     case "QUIT":
                         processedResponse = "GOODBYE!";
                         break;
@@ -111,8 +111,12 @@ public class MessageHandler extends Thread{
                 processedResponse = formatBroadcastMessage(message);
                 break;
 
-            case "GRP BCST":
-                processedResponse = formatGroupMessage(message);
+            case "GRP":
+                switch (message.split(" ")[1]) {
+                    case "BCST":
+                        processedResponse = formatGroupMessage(message);
+                        break;
+                }
                 break;
 
             case "PMSG":
@@ -123,6 +127,21 @@ public class MessageHandler extends Thread{
             case "ACK":
                 chat.addUsernameRequestingAcknowledgement(message.split(" ")[1]);
                 processedResponse = "You have got new file transfer request!";
+                break;
+
+            case "FIL":
+                secondCommand = message.split(" ")[1];
+
+                switch (secondCommand) {
+                    case "ACC":
+                        System.out.println("User " + message.split(" ")[2] + " accepted your file transfer request!");
+                        break;
+
+                    case "DEC":
+                        System.out.println("User " + message.split(" ")[2] + " declined your file transfer request!");
+                        break;
+                }
+
                 break;
 
             default:
@@ -151,6 +170,10 @@ public class MessageHandler extends Thread{
 
         String formattedMessage = "Received message from group " + groupName + ":\n" + username + ": " + messageText;
         return formattedMessage;
+    }
+
+    private void startLoadingTheFile() throws IOException {
+        Socket fileSocket = new Socket("127.0.0.1", 1338);
     }
 
     private void sendPong() {

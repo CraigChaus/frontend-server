@@ -11,11 +11,10 @@ public class Main {
         chat.startTheChat();
 
         String menu = "1. Connect to the server with username\n2. Send a broadcast message\n" +
-                "3.Send a private message\n4.Send a message to a group\n5.Authenticate yourself" +
-                "\n6.Create a group\n7.Join a group\n8.Exit group\n9.List all clients\n10.List all groups\n" +
-                "11.Send File to user\n20. See clients who tries to send you a file" + "0. Disconnect from the server\n";
+                "3. Send a private message\n4.Send a message to a group\n5. Authenticate yourself" +
+                "\n6. Create a group\n7. Join a group\n8. Exit group\n9. List all clients\n10. List all groups\n" +
+                "11. Send File to user\n20. See clients who tries to send you a file\n21. Create password\n0. Disconnect from the server\n";
         int choice;
-
 
         do {
 
@@ -33,12 +32,14 @@ public class Main {
                     chat.enterUsername(username);
                     menu = menu.replace("1. Connect to the server with username", "");
                     break;
+
                 case 2:
                     System.out.println("Enter Broadcast message:");
                     scanner = new Scanner(System.in);
                     String broadMessage = scanner.nextLine();
                     chat.sendBroadcastMessage(broadMessage);
                     break;
+
                 case 3:
                     System.out.println("Enter username to send the message:");
                     scanner = new Scanner(System.in);
@@ -47,6 +48,7 @@ public class Main {
                     String message = scanner.nextLine();
                     chat.sendPrivateMessage(usernameToSendPrivateMessage, message);
                     break;
+
                 case 4:
                     System.out.println("Enter group name to send a message to:");
                     scanner = new Scanner(System.in);
@@ -55,26 +57,35 @@ public class Main {
                     String groupMessage = scanner.nextLine();
                     chat.sendMessageToGroup(groupName, groupMessage);
                     break;
+
                 case 5:
+                    System.out.println("Enter your password for authentication:");
+                    scanner = new Scanner(System.in);
+                    String password = scanner.nextLine();
+                    chat.authenticate(password);
                     break;
+
                 case 6:
                     System.out.println("Enter name of the group you want to create:");
                     scanner = new Scanner(System.in);
                     String groupNameToCreate = scanner.nextLine();
                     chat.createGroup(groupNameToCreate);
                     break;
+
                 case 7:
                     System.out.println("Enter name of the group you want to join:");
                     scanner = new Scanner(System.in);
                     String groupNameToJoin = scanner.nextLine();
                     chat.joinGroup(groupNameToJoin);
                     break;
+
                 case 8:
                     System.out.println("Enter name of the group you want to exit:");
                     scanner = new Scanner(System.in);
                     String groupNameToExit = scanner.nextLine();
                     chat.exitGroup(groupNameToExit);
                     break;
+
                 case 9:
                     System.out.println("Listing all clients");
                     break;
@@ -94,14 +105,37 @@ public class Main {
                     if (chat.getUsernamesRequestingAck().size() != 0) {
                         System.out.println(chat.getUsernamesRequestingAck());
                         scanner = new Scanner(System.in);
-                        System.out.println("\nWho do you want to accept?");
-                        String usernameToAccept = scanner.nextLine();
-                        if (chat.getUsernamesRequestingAck().contains(usernameToAccept)) {
-                            chat.acceptAcknowledgement(usernameToAccept);
-                            System.out.println("You accepted the acknowledgement for " + usernameToAccept + "");
+                        System.out.println("\nChoose username from list:");
+                        String usernameToAcceptOrDecline = scanner.nextLine();
+                        System.out.println("Do you want to accept or decline? (a/d)");
+                        String decision = scanner.nextLine();
+                        if (chat.getUsernamesRequestingAck().contains(usernameToAcceptOrDecline)) {
+                            switch (decision) {
+                                case "a":
+                                    chat.acceptAcknowledgement(usernameToAcceptOrDecline);
+                                    System.out.println("You accepted the acknowledgement for " + usernameToAcceptOrDecline);
+                                    break;
+
+                                case "d":
+                                    chat.declineAcknowledgement(usernameToAcceptOrDecline);
+                                    System.out.println("You declined the acknowledgement for " + usernameToAcceptOrDecline);
+                                    break;
+
+                                default:
+                                    System.out.println("You made a wrong choice!");
+                                    break;
+                            }
+
                         }
                     }
 
+                    break;
+
+                case 21:
+                    System.out.println("Enter new password:");
+                    scanner = new Scanner(System.in);
+                    String passwordNew = scanner.nextLine();
+                    chat.createPassword(passwordNew);
                     break;
 
                 case 0:

@@ -77,6 +77,16 @@ public class ClientChat {
         writer.flush();
     }
 
+    public void createPassword(String password) {
+        writer.println("PASS " + password);
+        writer.flush();
+    }
+
+    public void authenticate(String password) {
+        writer.println("AUTH " + password);
+        writer.flush();
+    }
+
     public void createGroup(String groupName) {
         boolean validationPassed = validateNamesAndMessagesByCommands(groupName) && validateNamesBySpecialCharacters(groupName);
 
@@ -146,6 +156,11 @@ public class ClientChat {
 
     public void acceptAcknowledgement(String username) {
         writer.println("ACC " + username);
+        writer.flush();
+    }
+
+    public void declineAcknowledgement(String username) {
+        writer.println("DEC " + username);
         writer.flush();
     }
 
