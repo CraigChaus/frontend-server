@@ -98,7 +98,10 @@ public class Main {
                     System.out.println("Enter the name of the user to send the file:");
                     scanner = new Scanner(System.in);
                     String usernameToSendFileTo = scanner.nextLine();
-                    chat.sendFileAcknowledgement(usernameToSendFileTo);
+                    System.out.println("Enter the absolute path of the file:");
+                    scanner = new Scanner(System.in);
+                    String filePath = scanner.nextLine();
+                    chat.sendFileAcknowledgement(usernameToSendFileTo,filePath);
                     break;
 
                 case 20:

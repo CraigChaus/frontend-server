@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
 public class MessageHandler extends Thread{
@@ -31,16 +32,16 @@ public class MessageHandler extends Thread{
                     System.out.println(processReceivedMessage(receivedMessage));
                 }
 
-            } catch (IOException e) {
+            } catch (IOException | NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
 
         }
     }
 
-    public String processReceivedMessage(String message) {
+    public String processReceivedMessage(String message) throws IOException, NoSuchAlgorithmException {
         String firstCommand = message.split(" ")[0];
-        //The first element of the array is command, the second is message
+        //The first element of the array is command, the second is message, third could be a file
         String processedResponse = "";
 
         switch (firstCommand) {
@@ -134,11 +135,16 @@ public class MessageHandler extends Thread{
 
                 switch (secondCommand) {
                     case "ACC":
-                        System.out.println("User " + message.split(" ")[2] + " accepted your file transfer request!");
+                        System.out.println("User " + message.split(" ")[2] + " accepted your file transfer request for file: "+  message.split(" ")[3] );
+                        System.out.println("Now sending the file");
+                        startLoadingTheFile(message.split(" ")[2],chat.getChecksum( message.split(" ")[3] ));
+
                         break;
 
                     case "DEC":
                         System.out.println("User " + message.split(" ")[2] + " declined your file transfer request!");
+                        System.out.println("File sending cannot be done");
+
                         break;
                 }
 
@@ -172,8 +178,9 @@ public class MessageHandler extends Thread{
         return formattedMessage;
     }
 
-    private void startLoadingTheFile() throws IOException {
-        Socket fileSocket = new Socket("127.0.0.1", 1338);
+    private void startLoadingTheFile(String username,String checkSum) {
+        writer.println("FIL SND "+ username + " "+ checkSum);
+        writer.flush();
     }
 
     private void sendPong() {

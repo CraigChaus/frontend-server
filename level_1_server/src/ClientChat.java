@@ -1,5 +1,7 @@
 import java.io.*;
 import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -20,7 +22,7 @@ public class ClientChat {
 
     private ArrayList<String> usernamesRequestingAck;
 
-    private final String[] commands = new String[]{"CONN","BCST","MSG","QUIT", "GRP CRT", "GRP JOIN", "GRP LST", "GRP EXIT"};
+    private final String[] commands = new String[]{"CONN","BCST","MSG","QUIT","GRP CRT", "GRP JOIN", "GRP LST", "GRP EXIT"};
 
     public ClientChat(Socket socket){
         this.socket = socket;
@@ -143,15 +145,11 @@ public class ClientChat {
 
     }
 
-    public void sendFileAcknowledgement(String receiver) {
-        boolean validationPassed = validateNamesAndMessagesByCommands(receiver) && validateNamesBySpecialCharacters(receiver);
+    public void sendFileAcknowledgement(String receiver,String filePath) {
+        System.out.println("Sending FIL ACK");
 
-        if (validationPassed) {
-            writer.println("FIL ACK " + receiver);
+            writer.println("FIL ACK " + receiver + " "+ filePath);
             writer.flush();
-        } else {
-            System.out.println("Use only letters and numbers in your username. Don't use commands!");
-        }
     }
 
     public void acceptAcknowledgement(String username) {
@@ -216,5 +214,23 @@ public class ClientChat {
             System.out.println("Declined");
         }
         writer.flush();
+    }
+    public String getChecksum(String filepath) throws IOException, NoSuchAlgorithmException {
+
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        // DigestInputStream is better, but you also can hash file like this.
+        try (InputStream fis = new FileInputStream(filepath)) {
+            byte[] buffer = new byte[1024];
+            int readNo;
+            while ((readNo = fis.read(buffer)) != -1) {
+                md.update(buffer, 0, readNo);
+            }
+        }
+        // bytes to hex
+        StringBuilder result = new StringBuilder();
+        for (byte b : md.digest()) {
+            result.append(String.format("%02x", b));
+        }
+        return result.toString();
     }
 }
