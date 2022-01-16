@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d6e9094c-40d9-4f78-b498-d8dfcdd0bb27" name="Changes" comment="Improved acknowledgement handling">
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ClientChat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientChat.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
@@ -88,6 +87,7 @@
       <workItem from="1641727427004" duration="1355000" />
       <workItem from="1641803999451" duration="5363000" />
       <workItem from="1642166090797" duration="10763000" />
+      <workItem from="1642341982008" duration="8925000" />
     </task>
     <task id="LOCAL-00001" summary="Added group functionality">
       <created>1641217938285</created>

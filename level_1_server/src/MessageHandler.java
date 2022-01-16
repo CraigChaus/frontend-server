@@ -41,7 +41,7 @@ public class MessageHandler extends Thread{
 
     public String processReceivedMessage(String message) throws IOException, NoSuchAlgorithmException {
         String firstCommand = message.split(" ")[0];
-        //The first element of the array is command, the second is message, third could be a file
+        //The first element of the array is command, the second is message, third could be a file in the case of ACC/DEC
         String processedResponse = "";
 
         switch (firstCommand) {
@@ -126,7 +126,7 @@ public class MessageHandler extends Thread{
                 break;
 
             case "ACK":
-                chat.addUsernameRequestingAcknowledgement(message.split(" ")[1]);
+                chat.addUsernameRequestingAcknowledgement(message.split(" ")[1],message.split(" ")[2]);
                 processedResponse = "You have got new file transfer request!";
                 break;
 

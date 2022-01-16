@@ -112,7 +112,7 @@ public class Main {
                         String usernameToAcceptOrDecline = scanner.nextLine();
                         System.out.println("Do you want to accept or decline? (a/d)");
                         String decision = scanner.nextLine();
-                        if (chat.getUsernamesRequestingAck().contains(usernameToAcceptOrDecline)) {
+                        if (chat.getUsernamesRequestingAck().containsKey(usernameToAcceptOrDecline)) {
                             switch (decision) {
                                 case "a":
                                     chat.acceptAcknowledgement(usernameToAcceptOrDecline);
@@ -128,10 +128,8 @@ public class Main {
                                     System.out.println("You made a wrong choice!");
                                     break;
                             }
-
                         }
                     }
-
                     break;
 
                 case 21:
