@@ -1,6 +1,9 @@
 import java.io.*;
 import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,13 +21,13 @@ public class ClientChat {
     private OutputStream outputStream;
     private static PrintWriter writer;
 
-    private ArrayList<String> usernamesRequestingAck;
+    private HashMap<String,String> usernamesRequestingAck;
 
-    private final String[] commands = new String[]{"CONN","BCST","MSG","QUIT", "GRP CRT", "GRP JOIN", "GRP LST", "GRP EXIT"};
+    private final String[] commands = new String[]{"CONN","BCST","MSG","QUIT","GRP CRT", "GRP JOIN", "GRP LST", "GRP EXIT"};
 
     public ClientChat(Socket socket){
         this.socket = socket;
-        this.usernamesRequestingAck = new ArrayList<>();
+        this.usernamesRequestingAck = new HashMap<>();
     }
 
     public void startTheChat() {
@@ -143,24 +146,20 @@ public class ClientChat {
 
     }
 
-    public void sendFileAcknowledgement(String receiver) {
-        boolean validationPassed = validateNamesAndMessagesByCommands(receiver) && validateNamesBySpecialCharacters(receiver);
+    public void sendFileAcknowledgement(String receiver,String filePath) {
+        System.out.println("Sending FIL ACK");
 
-        if (validationPassed) {
-            writer.println("FIL ACK " + receiver);
+            writer.println("FIL ACK " + receiver + " "+ filePath);
             writer.flush();
-        } else {
-            System.out.println("Use only letters and numbers in your username. Don't use commands!");
-        }
     }
 
     public void acceptAcknowledgement(String username) {
-        writer.println("ACC " + username);
+        writer.println("ACC " + username+ " "+ usernamesRequestingAck.get(username));
         writer.flush();
     }
 
     public void declineAcknowledgement(String username) {
-        writer.println("DEC " + username);
+        writer.println("DEC " + username+ " "+ usernamesRequestingAck.get(username));
         writer.flush();
     }
 
@@ -193,11 +192,11 @@ public class ClientChat {
         return !matchFound;
     }
 
-    public void addUsernameRequestingAcknowledgement(String name) {
-        usernamesRequestingAck.add(name);
+    public void addUsernameRequestingAcknowledgement(String name,String filePath) {
+        usernamesRequestingAck.put(name,filePath);
     }
 
-    public ArrayList<String> getUsernamesRequestingAck() {
+    public HashMap<String,String > getUsernamesRequestingAck() {
         return usernamesRequestingAck;
     }
 
@@ -216,5 +215,23 @@ public class ClientChat {
             System.out.println("Declined");
         }
         writer.flush();
+    }
+    public String getChecksum(String filepath) throws IOException, NoSuchAlgorithmException {
+
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        // DigestInputStream is better, but you also can hash file like this.
+        try (InputStream fis = new FileInputStream(filepath)) {
+            byte[] buffer = new byte[1024];
+            int readNo;
+            while ((readNo = fis.read(buffer)) != -1) {
+                md.update(buffer, 0, readNo);
+            }
+        }
+        // bytes to hex
+        StringBuilder result = new StringBuilder();
+        for (byte b : md.digest()) {
+            result.append(String.format("%02x", b));
+        }
+        return result.toString();
     }
 }
