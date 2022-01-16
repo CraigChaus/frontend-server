@@ -137,7 +137,7 @@ public class MessageHandler extends Thread{
                     case "ACC":
                         System.out.println("User " + message.split(" ")[2] + " accepted your file transfer request for file: "+  message.split(" ")[3] );
                         System.out.println("Now sending the file");
-                        startLoadingTheFile(message.split(" ")[2],chat.getChecksum( message.split(" ")[3] ));
+                        startLoadingTheFile(message.split(" ")[2],chat.getChecksum(message.split(" ")[3]), message.split(" ")[3]);
 
                         break;
 
@@ -178,8 +178,8 @@ public class MessageHandler extends Thread{
         return formattedMessage;
     }
 
-    private void startLoadingTheFile(String username,String checkSum) {
-        writer.println("FIL SND "+ username + " "+ checkSum);
+    private void startLoadingTheFile(String username,String checkSum, String filePath) {
+        writer.println("FIL SND "+ username + " "+ checkSum + " " + filePath);
         writer.flush();
     }
 
