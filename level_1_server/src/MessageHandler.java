@@ -9,6 +9,10 @@ public class MessageHandler extends Thread{
     private PrintWriter writer;
     private ClientChat chat;
 
+    long primeKey = 0;
+    long rootKey = 0;
+    long otherClientsPublicValue = 0;
+
     public MessageHandler(Socket socket, ClientChat chat) {
         this.socket = socket;
         this.chat = chat;
@@ -150,6 +154,29 @@ public class MessageHandler extends Thread{
 
                 break;
 
+                //cases for encryption
+            case "ENCR":
+                System.out.println("received public keys "+message.split(" ")[1]+" and "+message.split(" ")[2]);
+                System.out.println();
+
+                 primeKey = Long.parseLong(message.split(" ")[1]);
+                 rootKey = Long.parseLong(message.split(" ")[2]);
+
+                String username = message.split(" ")[3];
+                long publicValue = chat.calculatePublicValue(primeKey,rootKey,chat.getPrivateKey());
+                sendPublicValue(username,publicValue);
+                break;
+
+            case "PVE":
+                System.out.println("received public value "+message.split(" ")[2]+ " from "+ message.split(" ")[1]);
+                System.out.println();
+                System.out.println("Calculating session key");
+
+                otherClientsPublicValue = Long.parseLong(message.split(" ")[2]);
+
+                System.out.println("Your session key is :" + chat.calculateSymmetricKey(primeKey,chat.getPrivateKey(),otherClientsPublicValue));
+                break;
+
             default:
                 processedResponse = message;
                 break;
@@ -180,6 +207,11 @@ public class MessageHandler extends Thread{
 
     private void startLoadingTheFile(String username,String checkSum, String filePath) {
         writer.println("FIL SND "+ username + " "+ checkSum + " " + filePath);
+        writer.flush();
+    }
+
+    private void sendPublicValue(String username,long publicValue){
+        writer.println("PV " + " "+ username + " "+ publicValue);
         writer.flush();
     }
 

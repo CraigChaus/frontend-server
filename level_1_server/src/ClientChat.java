@@ -1,3 +1,5 @@
+import ENCRYPTION.ValueCalculator;
+
 import java.io.*;
 import java.net.Socket;
 import java.security.MessageDigest;
@@ -20,6 +22,8 @@ public class ClientChat {
     private Socket socket;
     private OutputStream outputStream;
     private static PrintWriter writer;
+    private long sessionKey = 0;
+    private long privateKey;
 
     private HashMap<String,String> usernamesRequestingAck;
 
@@ -28,6 +32,8 @@ public class ClientChat {
     public ClientChat(Socket socket){
         this.socket = socket;
         this.usernamesRequestingAck = new HashMap<>();
+        this.sessionKey = 0;
+        this.privateKey = 0;
     }
 
     public void startTheChat() {
@@ -233,5 +239,58 @@ public class ClientChat {
             result.append(String.format("%02x", b));
         }
         return result.toString();
+    }
+
+    //All these methods only deal with encryption
+
+    /**
+     * Method to send an encryption request to the receiver
+     * @param usernameReceiver username of the receiver
+     */
+    public void sendEncryptionRequest(String usernameReceiver){
+        writer.println("ENC " + usernameReceiver);
+        writer.flush();
+    }
+
+    public long calculatePublicValue(long primeKeyP, long rootKeyG,long privateKey) {
+
+        // Both the persons receive the primeKey and rootKey from the server.
+        // public keys rootKeyG and primeKeyP
+
+        // A prime number P is taken from server
+        System.out.println("The value of P:" + primeKeyP);
+
+        // A primitive root for P, G is taken from server
+        System.out.println("The value of G:" + rootKeyG);
+
+        // Clients private key privateKey is put into the algorithm
+
+        // Client gets the first generated public value to be sent to the other client via the chat server
+        System.out.println(ValueCalculator.power(rootKeyG, privateKey, primeKeyP));
+
+        return ValueCalculator.power(rootKeyG, privateKey, primeKeyP);
+    }
+
+
+    public long calculateSymmetricKey(long primeKeyP, long privateKey,long otherClientsPublicValue){
+
+        // Generating the secret key after the exchange of public values via chat server
+        return ValueCalculator.power(otherClientsPublicValue, privateKey, primeKeyP); // Secret key for current client
+    }
+
+    public long getSessionKey() {
+        return sessionKey;
+    }
+
+    public void setSessionKey(long sessionKey) {
+        this.sessionKey = sessionKey;
+    }
+
+    public long getPrivateKey() {
+        return privateKey;
+    }
+
+    public void setPrivateKey(long privateKey) {
+        this.privateKey = privateKey;
     }
 }

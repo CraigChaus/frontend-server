@@ -13,7 +13,8 @@ public class Main {
         String menu = "1. Connect to the server with username\n2. Send a broadcast message\n" +
                 "3. Send a private message\n4.Send a message to a group\n5. Authenticate yourself" +
                 "\n6. Create a group\n7. Join a group\n8. Exit group\n9. List all clients\n10. List all groups\n" +
-                "11. Send File to user\n20. See clients who tries to send you a file\n21. Create password\n0. Disconnect from the server\n";
+                "11. Send File to user\n12.Input your private key for safe storage\n13.Send a secret message\n20. See clients who tries to send you a file\n21. Create password"+
+                "\n0. Disconnect from the server\n";
         int choice;
 
         do {
@@ -99,9 +100,28 @@ public class Main {
                     scanner = new Scanner(System.in);
                     String usernameToSendFileTo = scanner.nextLine();
                     System.out.println("Enter the absolute path of the file:");
-                    scanner = new Scanner(System.in);
                     String filePath = scanner.nextLine();
                     chat.sendFileAcknowledgement(usernameToSendFileTo,filePath);
+                    break;
+
+                case 12:
+                    System.out.println("Input your digit private key");
+                    chat.setPrivateKey(scanner.nextLong());
+                    System.out.println();
+                    System.out.println("Thank you, its been stored, you can now initiate encryption");
+                    break;
+
+                case 13:
+                    if(chat.getPrivateKey() == 0) {
+                        System.out.println("You do not have a private key yet, please input one");
+                        System.out.println("======Menu must be displayed again======");
+                        break;
+                    }
+                        System.out.println("Enter the name of the user you wish to secretly talk to");
+                        scanner = new Scanner(System.in);
+                        String usernameForSecretTalk = scanner.nextLine();
+                        chat.sendEncryptionRequest(usernameForSecretTalk);
+
                     break;
 
                 case 20:
