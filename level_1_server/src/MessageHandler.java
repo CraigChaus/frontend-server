@@ -16,7 +16,7 @@ public class MessageHandler extends Thread{
 
     @Override
     public void run() {
-        while (true) {
+        while (!socket.isClosed()) {
             try {
                 InputStream inputStream = socket.getInputStream();
                 OutputStream outputStream = socket.getOutputStream();
@@ -32,7 +32,14 @@ public class MessageHandler extends Thread{
                     System.out.println(processReceivedMessage(receivedMessage));
                 }
 
-            } catch (IOException | NoSuchAlgorithmException e) {
+            } catch (IOException e) {
+                try {
+                    System.out.println("Server stopped working!");
+                    socket.close();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
 
@@ -181,6 +188,8 @@ public class MessageHandler extends Thread{
     private void startLoadingTheFile(String username,String checkSum, String filePath) {
         writer.println("FIL SND "+ username + " "+ checkSum + " " + filePath);
         writer.flush();
+
+        chat.sendFile(filePath, username);
     }
 
     private void sendPong() {
