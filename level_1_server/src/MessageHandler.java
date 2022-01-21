@@ -163,11 +163,11 @@ public class MessageHandler extends Thread{
 
                 //cases for encryption
             case "ENC":
-                //TODO: implement ENCSK here
+                //TODO: implement sending ENCSK here
                 chat.generateSessionKeyThenEncrypt(message.split(" ")[1],message.split(" ")[2]);
                 break;
             case "ENCSK":
-                //TODO: implement decrypting of session key here
+                //TODO: implement decrypting of session key here then send message
                 chat.decryptAndObtainSessionKey(message.split(" ")[2]);
                 break;
 
