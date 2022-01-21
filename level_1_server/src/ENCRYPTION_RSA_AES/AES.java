@@ -1,18 +1,21 @@
 package ENCRYPTION_RSA_AES;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+import javax.crypto.*;
 import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.AlgorithmParameterSpec;
 import java.util.Base64;
 
 public class AES {
     private SecretKey sessionKey;
     private final int KEY_SIZE = 128;
-    private final int T_LEN = 128;
-    private Cipher encryptionCipher;
 
     public AES() {
     }
@@ -27,14 +30,13 @@ public class AES {
      * Method to encrypt the message during session
      * @param message the message to encrypt
      * @return string of the message
-     * @throws Exception
+     * @throws Exception when algorithm does not exist
      */
-    public String encryptAES(String message, SecretKey yourSessionKey) throws Exception {
-        byte[] messageInBytes = message.getBytes();
-        encryptionCipher = Cipher.getInstance("AES");
-        encryptionCipher.init(Cipher.ENCRYPT_MODE, yourSessionKey);
-        byte[] encryptedBytes = encryptionCipher.doFinal(messageInBytes);
-        return encode(encryptedBytes);
+    public  String encryptAES(String algorithm, String message, SecretKey key) throws Exception{
+
+        Cipher cipher = Cipher.getInstance(algorithm);
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        return Base64.getEncoder().encodeToString(cipher.doFinal(message.getBytes("UTF-8")));
     }
 
     /**
@@ -43,13 +45,11 @@ public class AES {
      * @return the string format of the decrypted value
      * @throws Exception when algorithm does not exist
      */
-    public String decryptAES(String encryptedMessage,SecretKey yourSessionKey) throws Exception {
-        byte[] messageInBytes = decode(encryptedMessage);
-        Cipher decryptionCipher = Cipher.getInstance("AES");
-        GCMParameterSpec spec = new GCMParameterSpec(T_LEN, encryptionCipher.getIV());
-        decryptionCipher.init(Cipher.DECRYPT_MODE, yourSessionKey, spec);
-        byte[] decryptedBytes = decryptionCipher.doFinal(messageInBytes);
-        return new String(decryptedBytes);
+    public  String decryptAES(String algorithm, String encryptedMessage, SecretKey key) throws Exception{
+
+        Cipher cipher = Cipher.getInstance(algorithm);
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        return new String(cipher.doFinal(Base64.getDecoder().decode(encryptedMessage)));
     }
 
     /**
@@ -89,8 +89,12 @@ public class AES {
      */
     public SecretKey convertStringToSecretKeytoAES(String encodedKey) {
         byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
-        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
-        return originalKey;
+        return new SecretKeySpec(decodedKey, 0, 16, "AES");
+    }
+    public IvParameterSpec generateIv() {
+        byte[] iv = new byte[16];
+        new SecureRandom().nextBytes(iv);
+        return new IvParameterSpec(iv);
     }
 
     public SecretKey getSessionKey() {

@@ -112,15 +112,14 @@ public class Main {
                     scanner = new Scanner(System.in);
                     String userNameReceiver = scanner.nextLine();
                     System.out.println();
-                    System.out.println("Input the secret message in plain text");
-                    String messageToEncrypt = scanner.nextLine();
-                    if(chat.isSessionKeyGrasped()){
+                    if(!chat.isSessionKeyGrasped()){
                         //TODO: send another secret message
-                        chat.encryptAESMessageThenSend(userNameReceiver,messageToEncrypt);
-                    }else {
-                        //TODO: method here to start it all then send a message
                         chat.sendPublicKey(userNameReceiver);
                     }
+                    //TODO: method here to start it all then send a message
+                    System.out.println("Input the secret message in plain text");
+                    String messageToEncrypt = scanner.nextLine();
+                    chat.encryptAESMessageThenSend(userNameReceiver,messageToEncrypt);
                     break;
 
                 case 20:

@@ -3,7 +3,10 @@ package ENCRYPTION_RSA_AES;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 public class RSA {
@@ -66,7 +69,7 @@ public class RSA {
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.DECRYPT_MODE,yourPrivateKey);
         byte[] decryptedMessage = cipher.doFinal(encryptedBytes);
-        return new String(decryptedMessage,"UTF8");
+        return new String(decryptedMessage, StandardCharsets.UTF_8);
     }
 
     /**
@@ -75,10 +78,9 @@ public class RSA {
      * @return string format of the key!!!
      * @throws NoSuchAlgorithmException thrown when algorithm doesnt exist
      */
-    public String convertSecretKeyToStringRSA(PublicKey publicKey) throws NoSuchAlgorithmException {
-        byte[] rawData = publicKey.getEncoded();
-        String encodedKey = Base64.getEncoder().encodeToString(rawData);
-        return encodedKey;
+    public String convertPublicKeyToStringRSA(PublicKey publicKey) throws NoSuchAlgorithmException {
+        byte[] publicKeyByte = publicKey.getEncoded();
+        return Base64.getEncoder().encodeToString(publicKeyByte);
     }
     /**
      * Method to change a string that was once a key into a secret key again!
@@ -86,10 +88,11 @@ public class RSA {
      * @return the key version of the string
      */
 
-    public SecretKey convertStringToSecretKeytoRSA(String encodedKey) {
-        byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
-        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "RSA");
-        return originalKey;
+    public PublicKey convertStringToPublicKeyToRSA(String encodedKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
+       byte[] encodedKeyBytes = Base64.getDecoder().decode(encodedKey);
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encodedKeyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        return keyFactory.generatePublic(keySpec);
     }
 
     public PrivateKey getPrivatekey() {

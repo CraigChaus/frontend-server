@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d8427700-5d4f-4c51-b938-1226a2d0ea20" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_1_16_2022_7_41_PM__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_1_16_2022_7_41_PM__Default_Changelist_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ClientChat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientChat.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ENCRYPTION_RSA_AES/AES.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ENCRYPTION_RSA_AES/AES.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ENCRYPTION_RSA_AES/RSA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ENCRYPTION_RSA_AES/RSA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MessageHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,13 +47,6 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../internet-technology-server-side" />
   </component>
   <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="level_1_server" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -62,6 +56,13 @@
       <option name="TEST_OBJECT" value="CLASS" />
       <properties />
       <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="level_1_server" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -85,6 +86,7 @@
       <workItem from="1642582094666" duration="4270000" />
       <workItem from="1642672321132" duration="12575000" />
       <workItem from="1642735986081" duration="6000" />
+      <workItem from="1642774310816" duration="17799000" />
     </task>
     <servers />
   </component>
