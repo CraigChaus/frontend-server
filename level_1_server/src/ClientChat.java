@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.Socket;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -19,18 +18,23 @@ import java.util.regex.Pattern;
 
 */
 public class ClientChat {
-    private Socket socket;
+    private final Socket messageSocket;
+    private final Socket fileSocket;
     private OutputStream outputStream;
     private static PrintWriter writer;
     private long sessionKey = 0;
     private long privateKey;
 
+    private FileHandler fileHandler;
+
+    // Key: Username    Value: File path
     private HashMap<String,String> usernamesRequestingAck;
 
     private final String[] commands = new String[]{"CONN","BCST","MSG","QUIT","GRP CRT", "GRP JOIN", "GRP LST", "GRP EXIT"};
 
-    public ClientChat(Socket socket){
-        this.socket = socket;
+    public ClientChat(Socket messageSocket, Socket fileSocket){
+        this.messageSocket = messageSocket;
+        this.fileSocket = fileSocket;
         this.usernamesRequestingAck = new HashMap<>();
         this.sessionKey = 0;
         this.privateKey = 0;
@@ -38,11 +42,14 @@ public class ClientChat {
 
     public void startTheChat() {
         try {
-            outputStream = socket.getOutputStream();
+            outputStream = messageSocket.getOutputStream();
             writer = new PrintWriter(outputStream);
 
-            MessageHandler messageHandlerThread = new MessageHandler(socket, this);
+            MessageHandler messageHandlerThread = new MessageHandler(messageSocket, this);
             messageHandlerThread.start();
+
+            fileHandler = new FileHandler(fileSocket);
+            fileHandler.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -160,13 +167,18 @@ public class ClientChat {
     }
 
     public void acceptAcknowledgement(String username) {
-        writer.println("ACC " + username+ " "+ usernamesRequestingAck.get(username));
+        String filepath = usernamesRequestingAck.get(username);
+        writer.println("ACC " + username+ " "+ filepath);
         writer.flush();
     }
 
     public void declineAcknowledgement(String username) {
         writer.println("DEC " + username+ " "+ usernamesRequestingAck.get(username));
         writer.flush();
+    }
+
+    public void sendFile(String filepath, String receiver) {
+        fileHandler.sendFile(filepath, receiver);
     }
 
     public void disconnect(){

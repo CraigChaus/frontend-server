@@ -5,8 +5,10 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+        Socket messageSocket = new Socket("127.0.0.1", 1337);
+        Socket fileSocket = new Socket("127.0.0.1", 1338);
 
-        ClientChat chat = new ClientChat(new Socket("127.0.0.1",1337));
+        ClientChat chat = new ClientChat(messageSocket, fileSocket);
 
         chat.startTheChat();
 
