@@ -1,10 +1,13 @@
-import ENCRYPTION.ValueCalculator;
+import ENCRYPTION_RSA_AES.AES;
+import ENCRYPTION_RSA_AES.RSA;
 
+import javax.crypto.SecretKey;
 import java.io.*;
 import java.net.Socket;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -19,30 +22,46 @@ import java.util.regex.Pattern;
 
 */
 public class ClientChat {
-    private Socket socket;
+    private final Socket messageSocket;
+    private final Socket fileSocket;
     private OutputStream outputStream;
     private static PrintWriter writer;
-    private long sessionKey = 0;
-    private long privateKey;
+    private boolean isSessionKeyGrasped;
 
+    private PrivateKey privatekey;
+    private PublicKey publicKey;
+    private SecretKey sessionKey;
+
+    private RSA rsa;
+    private AES aes;
+
+    private FileHandler fileHandler;
+
+    // Key: Username    Value: File path
     private HashMap<String,String> usernamesRequestingAck;
 
     private final String[] commands = new String[]{"CONN","BCST","MSG","QUIT","GRP CRT", "GRP JOIN", "GRP LST", "GRP EXIT"};
 
-    public ClientChat(Socket socket){
-        this.socket = socket;
+    public ClientChat(Socket messageSocket, Socket fileSocket){
+        this.messageSocket = messageSocket;
+        this.fileSocket = fileSocket;
         this.usernamesRequestingAck = new HashMap<>();
-        this.sessionKey = 0;
-        this.privateKey = 0;
+       this.isSessionKeyGrasped = false;
+       this.publicKey = null;
+       this.privatekey = null;
+       this.sessionKey = null;
     }
 
     public void startTheChat() {
         try {
-            outputStream = socket.getOutputStream();
+            outputStream = messageSocket.getOutputStream();
             writer = new PrintWriter(outputStream);
 
-            MessageHandler messageHandlerThread = new MessageHandler(socket, this);
+            MessageHandler messageHandlerThread = new MessageHandler(messageSocket, this);
             messageHandlerThread.start();
+
+            fileHandler = new FileHandler(fileSocket);
+            fileHandler.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -160,13 +179,18 @@ public class ClientChat {
     }
 
     public void acceptAcknowledgement(String username) {
-        writer.println("ACC " + username+ " "+ usernamesRequestingAck.get(username));
+        String filepath = usernamesRequestingAck.get(username);
+        writer.println("ACC " + username+ " "+ filepath);
         writer.flush();
     }
 
     public void declineAcknowledgement(String username) {
         writer.println("DEC " + username+ " "+ usernamesRequestingAck.get(username));
         writer.flush();
+    }
+
+    public void sendFile(String filepath, String receiver) {
+        fileHandler.sendFile(filepath, receiver);
     }
 
     public void disconnect(){
@@ -244,53 +268,143 @@ public class ClientChat {
     //All these methods only deal with encryption
 
     /**
-     * Method to send an encryption request to the receiver
+     * Method to send the RSA public key to the receiver
      * @param usernameReceiver username of the receiver
      */
-    public void sendEncryptionRequest(String usernameReceiver){
-        writer.println("ENC " + usernameReceiver);
+    public void sendPublicKey(String usernameReceiver) throws NoSuchAlgorithmException {
+        //First generate the keys
+        rsa = new RSA();
+        rsa.generateKeyPair();
+
+        //Store public and private keys
+        this.publicKey = rsa.getPublicKey();
+        this.privatekey = rsa.getPrivatekey();
+
+        //Change the RSA public key into a string before sending
+        String publicKeyStringFormat = rsa.convertSecretKeyToStringRSA(publicKey);
+
+        // Finally, send the command!
+        writer.println("ENC " + usernameReceiver + " "+ publicKeyStringFormat);
         writer.flush();
     }
 
-    public long calculatePublicValue(long primeKeyP, long rootKeyG,long privateKey) {
+    /**
+     * Method to generate the aes session key then encrypt it before sending it to other client
+     * @param usernameSender name of the sender
+     * @param sendersPublicKey the public key of the sender
+     * @throws Exception thrown when algorithm does not exist
+     */
+      public void generateSessionKeyThenEncrypt(String usernameSender,String sendersPublicKey) throws Exception {
+            aes = new AES();
 
-        // Both the persons receive the primeKey and rootKey from the server.
-        // public keys rootKeyG and primeKeyP
+          try {
+              aes.generateKey();
+          } catch (NoSuchAlgorithmException e) {
+              e.printStackTrace();
+          }
 
-        // A prime number P is taken from server
-        System.out.println("The value of P:" + primeKeyP);
+          //obtain the secret key
+          this.sessionKey = aes.getSessionKey();
+          this.isSessionKeyGrasped = true;
 
-        // A primitive root for P, G is taken from server
-        System.out.println("The value of G:" + rootKeyG);
+          //change the session key into a string format before encrypting
+            String sessionKeyString = aes.convertSecretKeyToStringAES(sessionKey);
 
-        // Clients private key privateKey is put into the algorithm
+         //Change the senders public key from string to public key
+          //before it can be used to encrypt the session key
+          PublicKey otherClientsPublicKey = (PublicKey) rsa.convertStringToSecretKeytoRSA(sendersPublicKey);
 
-        // Client gets the first generated public value to be sent to the other client via the chat server
-        System.out.println(ValueCalculator.power(rootKeyG, privateKey, primeKeyP));
+          //use the decoded public key to encrypt the session key
+          String encryptedSessionKey = rsa.encryptRSA(sessionKeyString,otherClientsPublicKey);
 
-        return ValueCalculator.power(rootKeyG, privateKey, primeKeyP);
+          //Finally, send back the encrypted key
+
+          writer.println("ENCSK " + usernameSender + " "+ encryptedSessionKey);
+          writer.flush();
+
+          System.out.println("Session key generated, Session now secure");
+      }
+
+    /**
+     * Method to decrypt the session key obtained to begin the session
+     * @param sessionkeyToDecrypt the sssion key to decrypt
+     * @throws Exception thrown when the algorithm does not exist
+     */
+      public void decryptAndObtainSessionKey(String sessionkeyToDecrypt) throws Exception {
+
+          //first decrypt the session key
+          String decryptedSessionKey = rsa.decryptRSA(sessionkeyToDecrypt,privatekey);
+
+          //change the decrypted session key into a type of Secret key;
+          this.sessionKey = aes.convertStringToSecretKeytoAES(decryptedSessionKey);
+
+          //let client know it has the key so that the session can begin
+          this.isSessionKeyGrasped = true;
+          System.out.println("Session key generated, Session now secure");
+      }
+
+    /**
+     * Method to encrypt the message then sending to the receiving client
+     * @param usernameReceiver name of receiver
+     * @param messageToEncrypt message to be encrypted
+     * @throws Exception thrown when algorithm does not exist
+     */
+      public void encryptAESMessageThenSend(String usernameReceiver,String messageToEncrypt) throws Exception {
+          aes = new AES();
+
+          //encrypt the message
+          String encryptedMessage = aes.encryptAES(messageToEncrypt,sessionKey);
+          //TODO: for testing purposes only, please delete when working perfectly
+          System.out.println(encryptedMessage);
+
+          //send the message
+          writer.println("ENCM "+ usernameReceiver+ " "+ encryptedMessage);
+          writer.flush();
+          System.out.println("Secure message sent");
+      }
+
+    /**
+     * Method to retrieve the message, decrypt it then display it
+     * @param messageToDecrypt the message to decrypt
+     * @return string format of message
+     * @throws Exception thrown when algorithm does not exist
+     */
+      public String decryptMessageThenDisplayIt(String messageToDecrypt) throws Exception {
+          aes = new AES();
+
+          //decrypt the message then return it
+          return aes.decryptAES(messageToDecrypt,sessionKey);
+      }
+
+    public boolean isSessionKeyGrasped() {
+        return isSessionKeyGrasped;
     }
 
-
-    public long calculateSymmetricKey(long primeKeyP, long privateKey,long otherClientsPublicValue){
-
-        // Generating the secret key after the exchange of public values via chat server
-        return ValueCalculator.power(otherClientsPublicValue, privateKey, primeKeyP); // Secret key for current client
+    public void setSessionKeyGrasped(boolean sessionKeyGrasped) {
+        isSessionKeyGrasped = sessionKeyGrasped;
     }
 
-    public long getSessionKey() {
+    public PrivateKey getPrivatekey() {
+        return privatekey;
+    }
+
+    public void setPrivatekey(PrivateKey privatekey) {
+        this.privatekey = privatekey;
+    }
+
+    public PublicKey getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(PublicKey publicKey) {
+        this.publicKey = publicKey;
+    }
+
+    public SecretKey getSessionKey() {
         return sessionKey;
     }
 
-    public void setSessionKey(long sessionKey) {
+    public void setSessionKey(SecretKey sessionKey) {
         this.sessionKey = sessionKey;
-    }
-
-    public long getPrivateKey() {
-        return privateKey;
-    }
-
-    public void setPrivateKey(long privateKey) {
-        this.privateKey = privateKey;
     }
 }

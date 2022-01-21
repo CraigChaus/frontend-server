@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d6e9094c-40d9-4f78-b498-d8dfcdd0bb27" name="Changes" comment="Improved acknowledgement handling">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ENCRYPTION/AES.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ENCRYPTION/ValueCalculator.java" afterDir="false" />
+    <list default="true" id="d8427700-5d4f-4c51-b938-1226a2d0ea20" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/ENCRYPTION_RSA_AES/RSA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_1_16_2022_7_41_PM__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_1_16_2022_7_41_PM__Default_Changelist_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ClientChat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientChat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ENCRYPTION/AES.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ENCRYPTION_RSA_AES/AES.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ENCRYPTION/ValueCalculator.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MessageHandler.java" afterDir="false" />
     </list>
@@ -14,9 +15,6 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="CompilerWorkspaceConfiguration">
-    <option name="PARALLEL_COMPILATION" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -36,7 +34,7 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
-  <component name="ProjectId" id="228uFG56EOIMBBrcmL9wbYw47eh" />
+  <component name="ProjectId" id="23pZ1RCcU4MlFk76vuRRpIYrVTu" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -48,75 +46,36 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="advanced.settings" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../internet-technology-server-side" />
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="level_1_server" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="d6e9094c-40d9-4f78-b498-d8dfcdd0bb27" name="Changes" comment="" />
-      <created>1639231429833</created>
+      <changelist id="d8427700-5d4f-4c51-b938-1226a2d0ea20" name="Default Changelist" comment="" />
+      <created>1642432830094</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1639231429833</updated>
-      <workItem from="1639231431084" duration="3317000" />
-      <workItem from="1639318116848" duration="1580000" />
-      <workItem from="1639416759005" duration="522000" />
-      <workItem from="1639484323285" duration="3798000" />
-      <workItem from="1641642797008" duration="3693000" />
-      <workItem from="1641727427004" duration="1355000" />
-      <workItem from="1641803999451" duration="5363000" />
-      <workItem from="1642166090797" duration="10763000" />
-      <workItem from="1642341982008" duration="8925000" />
-      <workItem from="1642354418933" duration="598000" />
-      <workItem from="1642518840744" duration="12000" />
-      <workItem from="1642604456074" duration="11700000" />
+      <updated>1642432830094</updated>
+      <workItem from="1642432844223" duration="9600000" />
+      <workItem from="1642495665802" duration="5809000" />
+      <workItem from="1642582094666" duration="4270000" />
+      <workItem from="1642672321132" duration="12575000" />
+      <workItem from="1642735986081" duration="6000" />
     </task>
-    <task id="LOCAL-00001" summary="Added group functionality">
-      <created>1641217938285</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1641217938285</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Added group functionality">
-      <created>1641223017955</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1641223017955</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Improved acknowledgement handling">
-      <created>1641643360039</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1641643360039</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -133,24 +92,5 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added group functionality" />
-    <MESSAGE value="Improved acknowledgement handling" />
-    <option name="LAST_COMMIT_MESSAGE" value="Improved acknowledgement handling" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <breakpoint enabled="true" type="java-exception">
-          <properties class="java.util.InputMismatchException" package="java.util" />
-          <option name="timeStamp" value="1" />
-        </breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
   </component>
 </project>
