@@ -14,7 +14,7 @@ public class AES {
     private final int T_LEN = 128;
     private Cipher encryptionCipher;
 
-    public  AES() {
+    public AES() {
     }
 
     public void generateKey() throws NoSuchAlgorithmException {

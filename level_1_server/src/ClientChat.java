@@ -46,10 +46,12 @@ public class ClientChat {
         this.messageSocket = messageSocket;
         this.fileSocket = fileSocket;
         this.usernamesRequestingAck = new HashMap<>();
-       this.isSessionKeyGrasped = false;
-       this.publicKey = null;
-       this.privatekey = null;
-       this.sessionKey = null;
+        this.isSessionKeyGrasped = false;
+        this.publicKey = null;
+        this.privatekey = null;
+        this.sessionKey = null;
+        this.rsa = new RSA();
+        this.aes = new AES();
     }
 
     public void startTheChat() {
@@ -143,7 +145,7 @@ public class ClientChat {
 
     public void sendMessageToGroup(String groupName, String message) {
         boolean validationPassed = validateNamesAndMessagesByCommands(groupName) && validateNamesAndMessagesByCommands(message);
-
+        System.out.println("Sending bcst to group");
         if (validationPassed) {
             String groupBroadcastMessage = "GRP BCST " + groupName + " " + message;
             writer.println(groupBroadcastMessage);
@@ -273,7 +275,7 @@ public class ClientChat {
      */
     public void sendPublicKey(String usernameReceiver) throws NoSuchAlgorithmException {
         //First generate the keys
-        rsa = new RSA();
+//        rsa = new RSA();
         rsa.generateKeyPair();
 
         //Store public and private keys
@@ -295,7 +297,7 @@ public class ClientChat {
      * @throws Exception thrown when algorithm does not exist
      */
       public void generateSessionKeyThenEncrypt(String usernameSender,String sendersPublicKey) throws Exception {
-            aes = new AES();
+//          aes = new AES();
 
           try {
               aes.generateKey();
@@ -308,7 +310,7 @@ public class ClientChat {
           this.isSessionKeyGrasped = true;
 
           //change the session key into a string format before encrypting
-            String sessionKeyString = aes.convertSecretKeyToStringAES(sessionKey);
+          String sessionKeyString = aes.convertSecretKeyToStringAES(sessionKey);
 
          //Change the senders public key from string to public key
           //before it can be used to encrypt the session key

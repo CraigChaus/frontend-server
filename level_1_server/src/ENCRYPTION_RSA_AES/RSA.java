@@ -10,9 +10,9 @@ public class RSA {
     private PrivateKey privatekey;
     private PublicKey publicKey;
 
-    public RSA(){
-
+    public RSA() {
     }
+
     public void generateKeyPair(){
         try {
             KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
