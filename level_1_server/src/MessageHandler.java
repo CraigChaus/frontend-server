@@ -43,14 +43,14 @@ public class MessageHandler extends Thread{
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
-            } catch (NoSuchAlgorithmException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
         }
     }
 
-    public String processReceivedMessage(String message) throws IOException, NoSuchAlgorithmException {
+    public String processReceivedMessage(String message) throws Exception {
         String firstCommand = message.split(" ")[0];
         //The first element of the array is command, the second is message, third could be a file in the case of ACC/DEC
         String processedResponse = "";
@@ -162,26 +162,18 @@ public class MessageHandler extends Thread{
                 break;
 
                 //cases for encryption
-            case "ENCR":
-                System.out.println("received public keys "+message.split(" ")[1]+" and "+message.split(" ")[2]);
-                System.out.println();
-
-                 primeKey = Long.parseLong(message.split(" ")[1]);
-                 rootKey = Long.parseLong(message.split(" ")[2]);
-
-                String username = message.split(" ")[3];
-                long publicValue = chat.calculatePublicValue(primeKey,rootKey,chat.getPrivateKey());
-                sendPublicValue(username,publicValue);
+            case "ENC":
+                //TODO: implement ENCSK here
+                chat.generateSessionKeyThenEncrypt(message.split(" ")[1],message.split(" ")[2]);
+                break;
+            case "ENCSK":
+                //TODO: implement decrypting of session key here
+                chat.decryptAndObtainSessionKey(message.split(" ")[2]);
                 break;
 
-            case "PVE":
-                System.out.println("received public value "+message.split(" ")[2]+ " from "+ message.split(" ")[1]);
-                System.out.println();
-                System.out.println("Calculating session key");
-
-                otherClientsPublicValue = Long.parseLong(message.split(" ")[2]);
-
-                System.out.println("Your session key is :" + chat.calculateSymmetricKey(primeKey,chat.getPrivateKey(),otherClientsPublicValue));
+            case "ENCM":
+                //TODO: implement outputting message here
+                processedResponse = "You got a new secure message \n"+  message.split(" ")[1] + ": "+ chat.decryptMessageThenDisplayIt(message.split(" ")[2]);
                 break;
 
             default:
@@ -219,10 +211,7 @@ public class MessageHandler extends Thread{
         chat.sendFile(filePath, username);
     }
 
-    private void sendPublicValue(String username,long publicValue){
-        writer.println("PV " + " "+ username + " "+ publicValue);
-        writer.flush();
-    }
+
 
     private void sendPong() {
         writer.println("PONG");
