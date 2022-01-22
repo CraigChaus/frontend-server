@@ -1,21 +1,24 @@
+import fileTransfer.ReceiveFileRunnable;
+import fileTransfer.SendFileRunnable;
+
 import java.io.*;
 import java.net.Socket;
-import java.security.NoSuchAlgorithmException;
-import java.util.Scanner;
 
 public class MessageHandler extends Thread{
 
     private Socket socket;
     private PrintWriter writer;
     private ClientChat chat;
+    private Socket fileSocket;
 
     long primeKey = 0;
     long rootKey = 0;
     long otherClientsPublicValue = 0;
 
-    public MessageHandler(Socket socket, ClientChat chat) {
+    public MessageHandler(Socket socket, Socket fileSocket, ClientChat chat) {
         this.socket = socket;
         this.chat = chat;
+        this.fileSocket = fileSocket;
     }
 
     @Override
@@ -113,6 +116,8 @@ public class MessageHandler extends Thread{
 
                     case "QUIT":
                         processedResponse = "GOODBYE!";
+                        socket.close();
+                        fileSocket.close();
                         break;
 
                 }
@@ -161,19 +166,23 @@ public class MessageHandler extends Thread{
 
                 break;
 
+            case "INC":
+                // Start receiving the file
+                System.out.println("Downloading file " + message.split(" ")[3] + "...");
+                new Thread(new ReceiveFileRunnable(fileSocket, message.split(" ")[2], message.split(" ")[3])).start();
+
+                break;
+
                 //cases for encryption
             case "ENC":
-                //TODO: implement sending ENCSK here
                 chat.generateSessionKeyThenEncrypt(message.split(" ")[1],message.split(" ")[2]);
                 break;
             case "ENCSK":
-                //TODO: implement decrypting of session key here then send message
                 chat.decryptAndObtainSessionKey(message.split(" ")[2]);
                 break;
 
             case "ENCM":
-                //TODO: implement outputting message here
-                processedResponse = "You got a new secure message \n"+  message.split(" ")[1] + ": "+ chat.decryptMessageThenDisplayIt(message.split(" ")[2]);
+                processedResponse = "You got a new secure message\n"+  message.split(" ")[1] + ": "+ chat.decryptMessageThenDisplayIt(message.split(" ")[2]);
                 break;
 
             default:
@@ -205,33 +214,17 @@ public class MessageHandler extends Thread{
     }
 
     private void startLoadingTheFile(String username,String checkSum, String filePath) {
-        writer.println("FIL SND "+ username + " "+ checkSum + " " + filePath);
+        String[] filePathParts = filePath.split("/");
+        String filename = filePathParts[filePathParts.length-1];
+        writer.println("FIL SND "+ username + " "+ checkSum + " " + filename);
         writer.flush();
 
-        chat.sendFile(filePath, username);
+        new Thread(new SendFileRunnable(fileSocket, filePath)).start();
     }
-
-
 
     private void sendPong() {
         writer.println("PONG");
         writer.flush();
     }
 
-//    private void processTheAck(String message) {
-//        System.out.println("User " + message.split(" ")[1] + " wants to send you the file. " +
-//                "Do you accept it? (y/n)");
-//        Scanner scanner = new Scanner(System.in);
-//        String answer = scanner.nextLine();
-//        String senderUsername = message.split(" ")[1];
-//
-//        if (answer.equalsIgnoreCase("y")) {
-//            writer.println("ACC " + senderUsername);
-//            System.out.println("Accepted");
-//        } else {
-//            writer.println("DEC " + senderUsername);
-//            System.out.println("Declined");
-//        }
-//        writer.flush();
-//    }
 }
