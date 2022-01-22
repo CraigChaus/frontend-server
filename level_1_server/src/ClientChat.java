@@ -178,6 +178,11 @@ public class ClientChat {
 
     }
 
+    public void listAllClients() {
+        writer.println("LST");
+        writer.flush();
+    }
+
     public void sendFileAcknowledgement(String receiver,String filePath) {
         System.out.println("Sending FIL ACK");
 

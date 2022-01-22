@@ -91,7 +91,7 @@ public class Main {
                     break;
 
                 case 9:
-                    System.out.println("Listing all clients");
+                    chat.listAllClients();
                     break;
 
                 case 10:
