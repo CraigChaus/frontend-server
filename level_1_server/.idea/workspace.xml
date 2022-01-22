@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d8427700-5d4f-4c51-b938-1226a2d0ea20" name="Default Changelist" comment="Fixing encryption">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
+    <list default="true" id="d8427700-5d4f-4c51-b938-1226a2d0ea20" name="Default Changelist" comment="Fixed client listing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ClientChat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientChat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ENCRYPTION_RSA_AES/AES.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ENCRYPTION_RSA_AES/AES.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ENCRYPTION_RSA_AES/RSA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ENCRYPTION_RSA_AES/RSA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FileHandler.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MessageHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +55,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
@@ -72,6 +86,14 @@
       <workItem from="1642672321132" duration="12575000" />
       <workItem from="1642735986081" duration="6000" />
     </task>
+    <task id="LOCAL-00001" summary="Fixed client listing">
+      <created>1642852245128</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1642852245128</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -88,5 +110,9 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fixed client listing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed client listing" />
   </component>
 </project>

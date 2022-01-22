@@ -38,7 +38,7 @@ public class ClientChat {
     private AES aes;
     String algorithm = "AES";
 
-    private FileHandler fileHandler;
+//    private FileHandler fileHandler;
 
     // Key: Username    Value: File path
     private HashMap<String,String> usernamesRequestingAck;
@@ -64,11 +64,9 @@ public class ClientChat {
             outputStream = messageSocket.getOutputStream();
             writer = new PrintWriter(outputStream);
 
-            MessageHandler messageHandlerThread = new MessageHandler(messageSocket, this);
+            MessageHandler messageHandlerThread = new MessageHandler(messageSocket, fileSocket,this);
             messageHandlerThread.start();
 
-            fileHandler = new FileHandler(fileSocket);
-            fileHandler.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -186,8 +184,8 @@ public class ClientChat {
     public void sendFileAcknowledgement(String receiver,String filePath) {
         System.out.println("Sending FIL ACK");
 
-            writer.println("FIL ACK " + receiver + " "+ filePath);
-            writer.flush();
+        writer.println("FIL ACK " + receiver + " " + filePath);
+        writer.flush();
     }
 
     public void acceptAcknowledgement(String username) {
@@ -201,14 +199,9 @@ public class ClientChat {
         writer.flush();
     }
 
-    public void sendFile(String filepath, String receiver) {
-        fileHandler.sendFile(filepath, receiver);
-    }
-
     public void disconnect(){
         String message = commands[3];
 
-        PrintWriter writer = new PrintWriter(outputStream);
         writer.println(message);
 
         writer.flush();
@@ -235,29 +228,14 @@ public class ClientChat {
     }
 
     public void addUsernameRequestingAcknowledgement(String name,String filePath) {
-        usernamesRequestingAck.put(name,filePath);
+        String filename = filePath.split("/")[filePath.split("/").length - 1];
+        usernamesRequestingAck.put(name,filename);
     }
 
     public HashMap<String,String > getUsernamesRequestingAck() {
         return usernamesRequestingAck;
     }
 
-    public void processTheAck(String message) {
-        System.out.println("User " + message.split(" ")[1] + " wants to send you the file. " +
-                "Do you accept it? (y/n)");
-        Scanner scanner = new Scanner(System.in);
-        String answer = scanner.nextLine();
-        String senderUsername = message.split(" ")[1];
-
-        if (answer.equalsIgnoreCase("y")) {
-            writer.println("ACC " + senderUsername);
-            System.out.println("Accepted");
-        } else {
-            writer.println("DEC " + senderUsername);
-            System.out.println("Declined");
-        }
-        writer.flush();
-    }
     public String getChecksum(String filepath) throws IOException, NoSuchAlgorithmException {
 
         MessageDigest md = MessageDigest.getInstance("MD5");
@@ -283,7 +261,8 @@ public class ClientChat {
      * Method to send the RSA public key to the receiver
      * @param usernameReceiver username of the receiver
      */
-    public void sendPublicKey(String usernameReceiver) throws NoSuchAlgorithmException {
+    public void sendPublicKey(String usernameReceiver) {
+
         //First generate the keys
         rsa.generateKeyPair();
 
@@ -307,12 +286,10 @@ public class ClientChat {
      */
       public void generateSessionKeyThenEncrypt(String usernameSender,String sendersPublicKey) throws Exception {
 
-          System.out.println("Session key for reciever is "+ sessionKey);
           this.isSessionKeyGrasped = true;
 
           //change the session key into a string format before encrypting
           String sessionKeyString = Base64.getEncoder().encodeToString(sessionKey.getEncoded());
-          System.out.println(sessionKeyString+ " for receiver client");
 
          //Change the senders public key from string to public key
           //before it can be used to encrypt the session key
@@ -320,14 +297,11 @@ public class ClientChat {
 
           //use the decoded public key to encrypt the session key
           String encryptedSessionKey = rsa.encryptRSA(sessionKeyString,otherClientsPublicKey);
-          //TODO: Delete after testing
-          System.out.println("This is the encrypted session key "+ encryptedSessionKey);
-          //Finally, send back the encrypted key
 
+          //Finally, send back the encrypted key
           writer.println("ENCSK " + usernameSender + " "+ encryptedSessionKey);
           writer.flush();
 
-          System.out.println("Session key generated, Session now secure");
       }
 
     /**
@@ -345,7 +319,6 @@ public class ClientChat {
 
           //let client know it has the key so that the session can begin
           this.isSessionKeyGrasped = true;
-          System.out.println("Session key generated, Session now secure "+ Base64.getEncoder().encodeToString(sessionKey.getEncoded()) + " for the sender");
 
       }
 
@@ -358,10 +331,7 @@ public class ClientChat {
       public void encryptAESMessageThenSend(String usernameReceiver,String messageToEncrypt) throws Exception {
 
           //encrypt the message
-          System.out.println(sessionKey+ " the session key to use for encrypting message");
           String encryptedMessage = aes.encryptAES(algorithm,messageToEncrypt,sessionKey);
-          //TODO: for testing purposes only, please delete when working perfectly
-          System.out.println(encryptedMessage + " this is the encrypted message about to be sent");
 
           //send the message
           writer.println("ENCM "+ usernameReceiver+ " "+ encryptedMessage);
@@ -377,7 +347,6 @@ public class ClientChat {
      */
       public String decryptMessageThenDisplayIt(String messageToDecrypt) throws Exception {
 
-          System.out.println(sessionKey+" to be used for decrypting");
           //decrypt the message then return it
           return aes.decryptAES(algorithm,messageToDecrypt,sessionKey);
       }

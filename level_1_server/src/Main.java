@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -124,7 +125,9 @@ public class Main {
 
                 case 20:
                     if (chat.getUsernamesRequestingAck().size() != 0) {
-                        System.out.println(chat.getUsernamesRequestingAck());
+                        for (Map.Entry<String, String> entry: chat.getUsernamesRequestingAck().entrySet()) {
+                            System.out.println(entry.getKey() + " filename: " + entry.getValue());
+                        }
                         scanner = new Scanner(System.in);
                         System.out.println("\nChoose username from list:");
                         String usernameToAcceptOrDecline = scanner.nextLine();
@@ -158,7 +161,6 @@ public class Main {
                     break;
 
                 case 0:
-                    System.out.println("+++++++++++++++++++GOOD BYE+++++++++++++++++++");
                     chat.disconnect();
                     break;
 

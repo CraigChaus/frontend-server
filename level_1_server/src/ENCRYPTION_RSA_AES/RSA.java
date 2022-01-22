@@ -27,7 +27,6 @@ public class RSA {
     }
 
     /**
-     *
      * @param data the message byte array to change into a string after encryption
      * @return the string format of the message
      */
@@ -36,7 +35,6 @@ public class RSA {
     }
 
     /**
-     *
      * @param data the string format of the message before encryption
      * @return the byte format of the message
      */
@@ -45,7 +43,6 @@ public class RSA {
     }
 
     /**
-     *
      * @param message is the string format
      * @return the string format of the encrypted message
      * @throws Exception
@@ -59,7 +56,6 @@ public class RSA {
     }
 
     /**
-     *
      * @param encryptedMessage the string format of the encrypted message
      * @return the string format of the decrypted message
      * @throws Exception
@@ -76,18 +72,17 @@ public class RSA {
      * Method to convert a key into a string
      * @param publicKey the key to converted into a string
      * @return string format of the key!!!
-     * @throws NoSuchAlgorithmException thrown when algorithm doesnt exist
      */
-    public String convertPublicKeyToStringRSA(PublicKey publicKey) throws NoSuchAlgorithmException {
+    public String convertPublicKeyToStringRSA(PublicKey publicKey) {
         byte[] publicKeyByte = publicKey.getEncoded();
         return Base64.getEncoder().encodeToString(publicKeyByte);
     }
+
     /**
      * Method to change a string that was once a key into a secret key again!
      * @param encodedKey the string to change back to a key
      * @return the key version of the string
      */
-
     public PublicKey convertStringToPublicKeyToRSA(String encodedKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
        byte[] encodedKeyBytes = Base64.getDecoder().decode(encodedKey);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encodedKeyBytes);
@@ -99,15 +94,8 @@ public class RSA {
         return privatekey;
     }
 
-    public void setPrivatekey(PrivateKey privatekey) {
-        this.privatekey = privatekey;
-    }
-
     public PublicKey getPublicKey() {
         return publicKey;
     }
 
-    public void setPublicKey(PublicKey publicKey) {
-        this.publicKey = publicKey;
-    }
 }
