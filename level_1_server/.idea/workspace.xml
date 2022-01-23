@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d8427700-5d4f-4c51-b938-1226a2d0ea20" name="Default Changelist" comment="Fixed client listing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MessageHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +85,8 @@
       <workItem from="1642890005912" duration="729000" />
       <workItem from="1642898470731" duration="675000" />
       <workItem from="1642907012675" duration="590000" />
-      <workItem from="1642940343190" duration="4932000" />
+      <workItem from="1642940343190" duration="6871000" />
+      <workItem from="1642964915842" duration="2455000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed client listing">
       <created>1642852245128</created>
