@@ -11,9 +11,6 @@ public class MessageHandler extends Thread{
     private ClientChat chat;
     private Socket fileSocket;
 
-    long primeKey = 0;
-    long rootKey = 0;
-    long otherClientsPublicValue = 0;
 
     public MessageHandler(Socket socket, Socket fileSocket, ClientChat chat) {
         this.socket = socket;
@@ -33,11 +30,12 @@ public class MessageHandler extends Thread{
 
                 String receivedMessage = reader.readLine();
 
-                if (receivedMessage.equals("PING")) {
-                    sendPong();
-                } else {
-                    System.out.println(processReceivedMessage(receivedMessage));
-                }
+//                if (receivedMessage.equals("PING")) {
+//                    sendPong();
+//             } else {
+                //TODO: Fix PING PONG
+                System.out.println(processReceivedMessage(receivedMessage));
+
 
             } catch (IOException e) {
                 try {
