@@ -30,12 +30,12 @@ public class MessageHandler extends Thread{
 
                 String receivedMessage = reader.readLine();
 
-//                if (receivedMessage.equals("PING")) {
-//                    sendPong();
-//             } else {
-                //TODO: Fix PING PONG
-                System.out.println(processReceivedMessage(receivedMessage));
-
+                if (receivedMessage.equals("PING")) {
+                    sendPong();
+                } else {
+                    //TODO: Fix PING PONG
+                    System.out.println(processReceivedMessage(receivedMessage));
+                }
 
             } catch (IOException e) {
                 try {
